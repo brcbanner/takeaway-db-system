@@ -5,7 +5,7 @@ This document provides an in-depth explanation of the project ..., which impleme
 ## 📚 Table of Contents
 
 - [Conceptual Design](#conceptual-design)
-    - [Request](#request)
+    - [Sample Owner Request](#sample-owner-request)
     - [Requirements Analysis](#requirements-analysis)
     - [Requirements Gathering](#requirements-gathering)
         - [Data Requirements](#data-requirements)
@@ -38,7 +38,7 @@ This document provides an in-depth explanation of the project ..., which impleme
 
 ## CONCEPTUAL DESIGN
 
-## Request
+## Sample Owner Request
 A chain of takeaway sandwich shops, which has locations in the main cities of Italy, needs a well-organized database to handle info about customers, orders, workers, inventory, and shops.
 
 For each customer, their personal info is recorded, including first name, last name, age, email, tax code, phone number, _address_, and maybe the _floor_.
@@ -69,10 +69,25 @@ This text presents a number of ambiguities and imprecisions. At this stage, it i
   - `Store` and `point of sale` → `location` 
 
 - **Make references between terms explicit**
-  _ `Freelance workers` → riders
+  - `Freelance workers` → riders
 
 - **Indicate the unit of measurement** for all quantities 
   - `Unit price` → euro per kg or euro ??
   - `Available weight` → kilograms
   - `Distance` → kilometers
   - `Price` and `total order price` → euro
+
+To clarify and understand the terms used, a glossary of terms is presented below.
+
+| **Term** | **Description** | **Synonyms** | **Related terms** |
+|-----------|-----------------|---------------|--------------------|
+| `Distance` | Distance between the store and the delivery address, i.e., the customer's residence. | — | `Order` |
+| `Documents for hiring` | Tax code and an identity document, i.e., ID card or passport. | — | `Worker`, `Store` |
+| `Riders` | Workers of the chain, with a VAT number, who deliver the orders. | `Self-employed workers` | `Staff` |
+| `Address` | Address of the customer or a store, including region, province, postal code, street/square, and street number. | — | `Customer`, `Order`, `Store` |
+| `Workers` | Staff employed in each store, i.e., employees. Also includes self-employed ones. | `Staff`, `Employees` | `Store`, `Worker` |
+| `Store` | A store of the chain. | `Location`, `Point of sale` | `Worker`, `Order` |
+| `Contract period` | Start and end date of a work contract. | — | `Staff` |
+| `Floor` | Number of the floor of an apartment. | — | `Customer` |
+| `Available quantity` | Available weight. | — | `Ingredient` |
+| `Street` | General term for indicating a street or square in an address. | — | `Address` |

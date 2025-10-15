@@ -197,30 +197,30 @@ We first identify the most relevant concepts, which, in our context, are: Custom
 
 `Objects` are transformed into **entities**, and the *relationships* among them are represented as **relations** (each term is expressed as its singular noun form).
 
-![UML Diagram](uml/begin.png)
+![UML Diagram](uml/initial-overview.png)
 
 <details>
 <summary>🇬🇧 English Legend</summary>
 
 | Italian Term   | English Translation  |
 |----------------|-------------------|
-| Persona        | Person            |
-| Lavoratore     | Worker            |
 | Cliente        | Customer          |
-| Pagamento      | Payment           |
-| Fattorino      | Rider             |
-| Dipendente     | Employee          |
-| Ordine         | Order             |
-| Locale         | Shop              |
-| Ingrediente    | Ingredient        |
-| Piadina        | Sandwhich         |
-| Richiesta      | Request           |
-| Esecuzione     | Execution         |
-| Consegna       | Delivery          |
-| Impiego        | Contract          |
-| Inventario     | Inventory         |
 | Composizione   | Composition       |
+| Consegna       | Delivery          |
 | Contenuto      | Content           |
+| Dipendente     | Employee          |
+| Esecuzione     | Execution         |
+| Fattorino      | Rider             |
+| Impiego        | Contract          |
+| Ingrediente    | Ingredient        |
+| Inventario     | Inventory         |
+| Lavoratore     | Worker            |
+| Locale         | Shop              |
+| Ordine         | Order             |
+| Pagamento      | Payment           |
+| Piadina        | Sandwhich         |
+| Persona        | Person            |
+| Richiesta      | Request           |
 
 </details>
 
@@ -230,30 +230,34 @@ We begin with the Person entity.
 This is the parent entity of both Worker and Customer; thus, the generalization is total and overlapping.
 In turn, Worker is divided into Employee and Rider; this second generalization is total and exclusive.
 
-![UML Diagram](uml/)
+![UML Diagram](uml/person-generalization.png)
 
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term   | English Translation  |
-|----------------|-------------------|
-| Persona        | Person            |
-| Lavoratore     | Worker            |
-| Cliente        | Customer          |
-| Pagamento      | Payment           |
-| Fattorino      | Rider             |
-| Dipendente     | Employee          |
-| Ordine         | Order             |
-| Locale         | Shop              |
-| Ingrediente    | Ingredient        |
-| Piadina        | Sandwhich         |
-| Richiesta      | Request           |
-| Esecuzione     | Execution         |
-| Consegna       | Delivery          |
-| Impiego        | Contract          |
-| Inventario     | Inventory         |
-| Composizione   | Composition       |
-| Contenuto      | Content           |
+| Italian Term          | English Translation       |
+|-----------------------|--------------------------|
+| CAP                   | Postal Code / ZIP Code   |
+| Cliente               | Customer                 |
+| CodFiscale            | Tax Code                 |
+| Cognome               | Last Name / Surname      |
+| Dipendente Fattorino  | Employee / Delivery Person |
+| Email                 | Email                    |
+| Eta                   | Age                      |
+| Indirizzo             | Address                  |
+| Lavoratore            | Worker                   |
+| Nome                  | First Name               |
+| NumCartaId            | ID Card Number           |
+| NumCivico             | Street Number            |
+| NumPassaporto         | Passport Number          |
+| NumPiano              | Floor Number             |
+| NumTelefono           | Phone Number             |
+| PartitaIVA            | VAT Number               |
+| Persona               | Person                   |
+| Regione               | Region                   |
+| Provincia             | Province                 |
+| Strada                | Street                   |
+| TitoloProfessionale   | Job Title / Professional Title |
 
 </details>
 
@@ -261,88 +265,72 @@ Each Employee has only one contract with a Store; therefore, the Employee entity
 To record previous employment, we use a second many-to-many relationship called PastContract.
 These two relationships share almost the same attributes, but the first one includes an attribute Type, defining whether the contract is fixed-term or permanent. Based on this, there may or may not be an EndDate.
 
-![UML Diagram](uml/)
+![UML Diagram](uml/employee-store.png)
 
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term   | English Translation  |
-|----------------|-------------------|
-| Persona        | Person            |
-| Lavoratore     | Worker            |
-| Cliente        | Customer          |
-| Pagamento      | Payment           |
-| Fattorino      | Rider             |
-| Dipendente     | Employee          |
-| Ordine         | Order             |
-| Locale         | Shop              |
-| Ingrediente    | Ingredient        |
-| Piadina        | Sandwhich         |
-| Richiesta      | Request           |
-| Esecuzione     | Execution         |
-| Consegna       | Delivery          |
-| Impiego        | Contract          |
-| Inventario     | Inventory         |
-| Composizione   | Composition       |
-| Contenuto      | Content           |
+| Italian Term                 | English Translation            |
+|-------------------------------|-------------------------------|
+| Contratto                      | Contract                      |
+| ContrattoPassato               | Past / Previous Contract      |
+| DataFine                      | End Date                      |
+| DataInizio                    | Start Date                    |
+| DataInizio DataFine            | Start Date / End Date         |
+| Dipendente                     | Employee                      |
+| Locale                         | Location / Store              |
+| Stipendio Settore              | Salary / Sector               |
+| Tipo                          | Type                          |
+| TitoloProfessionale Contratto | Job Title (Contract)          |
 
 </details>
 
 Each Rider can deliver more than one order, but not vice versa; thus, there is a one-to-many relationship called Delivery between Order and Rider.
 
-![UML Diagram](uml/)
+![UML Diagram](uml/rider-order.png)
 
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term   | English Translation  |
-|----------------|-------------------|
-| Persona        | Person            |
-| Lavoratore     | Worker            |
-| Cliente        | Customer          |
-| Pagamento      | Payment           |
-| Fattorino      | Rider             |
-| Dipendente     | Employee          |
-| Ordine         | Order             |
-| Locale         | Shop              |
-| Ingrediente    | Ingredient        |
-| Piadina        | Sandwhich         |
-| Richiesta      | Request           |
-| Esecuzione     | Execution         |
-| Consegna       | Delivery          |
-| Impiego        | Contract          |
-| Inventario     | Inventory         |
-| Composizione   | Composition       |
-| Contenuto      | Content           |
+| Italian Term        | English Translation      |
+|--------------------|-------------------------|
+| Consegna            | Delivery                |
+| DataConsegna        | Delivery Date           |
+| Distanza            | Distance                |
+| Fattorino           | Delivery Person         |
+| MetodoConsegna      | Delivery Method         |
+| MetodoPagamento     | Payment Method          |
+| OraConsegna         | Delivery Time           |
+| Ordine              | Order                   |
+| PartitaIVA          | VAT Number              |
+| PrezzoConsegna      | Delivery Price          |
 
 </details>
 
 Each Customer can place multiple orders and, consequently, perform multiple payments; however, each order is requested and paid for by one and only one customer.
 
-![UML Diagram](uml/)
+![UML Diagram](uml/customer-payment-order-before.png)
 
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term   | English Translation  |
-|----------------|-------------------|
-| Persona        | Person            |
-| Lavoratore     | Worker            |
-| Cliente        | Customer          |
-| Pagamento      | Payment           |
-| Fattorino      | Rider             |
-| Dipendente     | Employee          |
-| Ordine         | Order             |
-| Locale         | Shop              |
-| Ingrediente    | Ingredient        |
-| Piadina        | Sandwhich         |
-| Richiesta      | Request           |
-| Esecuzione     | Execution         |
-| Consegna       | Delivery          |
-| Impiego        | Contract          |
-| Inventario     | Inventory         |
-| Composizione   | Composition       |
-| Contenuto      | Content           |
+| Italian Term        | English Translation      |
+|--------------------|-------------------------|
+| Cliente             | Customer                |
+| DataEsecuzione      | Execution Date          |
+| DataRichiesta       | Request Date            |
+| Email               | Email                   |
+| Esecuzione          | Execution               |
+| Eta                 | Age                     |
+| Fattorino           | Delivery Person         |
+| IDPagamento         | Payment ID              |
+| MetodoPagamento     | Payment Method          |
+| NumPiano            | Floor Number            |
+| OraEsecuzione       | Execution Time          |
+| OraRichiesta        | Request Time            |
+| Ordine              | Order                   |
+| Pagamento           | Payment                 |
+| Richiesta           | Request                 |
 
 </details>
 
@@ -351,60 +339,67 @@ Therefore, it is necessary to introduce a ternary relationship Transaction among
 This resolves the ambiguity and ensures a unified and centralized interaction.
 As a result, the order request and the payment execution occur simultaneously.
 
-![UML Diagram](uml/)
-
+![UML Diagram](uml/customer-payment-order-after.png)
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term   | English Translation  |
-|----------------|-------------------|
-| Persona        | Person            |
-| Lavoratore     | Worker            |
-| Cliente        | Customer          |
-| Pagamento      | Payment           |
-| Fattorino      | Rider             |
-| Dipendente     | Employee          |
-| Ordine         | Order             |
-| Locale         | Shop              |
-| Ingrediente    | Ingredient        |
-| Piadina        | Sandwhich         |
-| Richiesta      | Request           |
-| Esecuzione     | Execution         |
-| Consegna       | Delivery          |
-| Impiego        | Contract          |
-| Inventario     | Inventory         |
-| Composizione   | Composition       |
-| Contenuto      | Content           |
+| Italian Term        | English Translation      |
+|--------------------|-------------------------|
+| Cliente             | Customer                |
+| DataEsecuzione      | Execution Date          |
+| DataRichiesta       | Request Date            |
+| Email               | Email                   |
+| Esecuzione          | Execution               |
+| Eta                 | Age                     |
+| Fattorino           | Delivery Person         |
+| IDPagamento         | Payment ID              |
+| MetodoPagamento     | Payment Method          |
+| NumPiano            | Floor Number            |
+| OraEsecuzione       | Execution Time          |
+| OraRichiesta        | Request Time            |
+| Ordine              | Order                   |
+| Pagamento           | Payment                 |
+| Richiesta           | Request                 |
 
 </details>
 
 The Store entity is uniquely identified by the province code (e.g., FI for Florence), since the chain owns only one store per city.
 The Inventory relationship between Store and Ingredient records the UnitPrice, which is not stored in Ingredient because it can vary depending on the geographic location of the store.
 
-![UML Diagram](uml/)
+![UML Diagram](uml/store-overview.png)
 
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term   | English Translation  |
-|----------------|-------------------|
-| Persona        | Person            |
-| Lavoratore     | Worker            |
-| Cliente        | Customer          |
-| Pagamento      | Payment           |
-| Fattorino      | Rider             |
-| Dipendente     | Employee          |
-| Ordine         | Order             |
-| Locale         | Shop              |
-| Ingrediente    | Ingredient        |
-| Piadina        | Sandwhich         |
-| Richiesta      | Request           |
-| Esecuzione     | Execution         |
-| Consegna       | Delivery          |
-| Impiego        | Contract          |
-| Inventario     | Inventory         |
-| Composizione   | Composition       |
-| Contenuto      | Content           |
+| Italian Term         | English Translation           |
+|----------------------|-------------------------------|
+| CAP                  | Postal Code / ZIP Code        |
+| Categoria            | Category                      |
+| CodIngrediente       | Ingredient Code               |
+| CodPiadina Nome      | Sandwich Code & Name          |
+| Composizione         | Composition                   |
+| Consegna             | Delivery                      |
+| Contratto            | Contract                      |
+| Contenuto            | Content                       |
+| DataScadenza         | Expiration Date               |
+| Descrizione          | Description                   |
+| Dipendente           | Employee                      |
+| Fattorino            | Rider                         |
+| Ingrediente          | Ingredient                    |
+| Indirizzo            | Address                       |
+| Inventario           | Inventory                     |
+| Locale               | Store                         |
+| Nome                 | Name                          |
+| NumCivico            | Street Number                 |
+| Passato              | Past / Previous               |
+| PesoDisponibile      | Available Weight              |
+| Piadina              | Sandwich                      |
+| Prezzo               | Price                         |
+| PrezzoUnitario       | Unit Price                    |
+| Provincia            | Province                      |
+| Regione              | Region                        |
+| SiglaProvincia       | Province Abbreviation         |
+| Strada               | Street                        |
 
 </details>
 
@@ -412,88 +407,129 @@ The Order entity includes the attribute TotalOrderPrice, which equals the sum of
 Since it is essential to track the details of the ordered piadinas — i.e., their number and price — we make the relationship between Order and Piadina explicit, naming it OrderDetails and recording NumPiadinas and TotalPiadinaPrice.
 Distance can also be derived from the difference between the customer’s and store’s addresses; therefore, it makes sense to associate the Delivery also with Customer.
 
-![UML Diagram](uml/)
+![UML Diagram](uml/order-overview.png)
 
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term   | English Translation  |
-|----------------|-------------------|
-| Persona        | Person            |
-| Lavoratore     | Worker            |
-| Cliente        | Customer          |
-| Pagamento      | Payment           |
-| Fattorino      | Rider             |
-| Dipendente     | Employee          |
-| Ordine         | Order             |
-| Locale         | Shop              |
-| Ingrediente    | Ingredient        |
-| Piadina        | Sandwhich         |
-| Richiesta      | Request           |
-| Esecuzione     | Execution         |
-| Consegna       | Delivery          |
-| Impiego        | Contract          |
-| Inventario     | Inventory         |
-| Composizione   | Composition       |
-| Contenuto      | Content           |
+| Italian Term               | English Translation           |
+|----------------------------|-------------------------------|
+| Cliente                    | Customer                      |
+| Consegna                   | Delivery                      |
+| DataConsegna               | Delivery Date                 |
+| DataTransazione            | Transaction Date              |
+| Dettaglio                  | Detail                        |
+| Distanza                   | Distance                       |
+| Fattorino                  | Delivery Person               |
+| IDOrdine                   | Order ID                      |
+| Locale                     | Location / Store              |
+| MetodoConsegna             | Delivery Method               |
+| NumPiadine                 | Number of Flatbreads          |
+| Ordine                     | Order                         |
+| Ordini                     | Orders                        |
+| OraConsegna                | Delivery Time                 |
+| OraTransazione             | Transaction Time              |
+| Pagamento                  | Payment                       |
+| Piadina                    | Flatbread                     |
+| PrezzoConsegna             | Delivery Price                |
+| PrezzoTotalePiadina        | Flatbread Total Price         |
+| PrezzoTotaleOrdine         | Total Order Price             |
 
 </details>
 
 At this point, we notice that Delivery has become an association involving four entities and contains several attributes; therefore, it is more convenient to treat it as an entity itself, identified externally by the combination of Customer, Rider, Order, and Store.
 
-![UML Diagram](uml/)
+![UML Diagram](uml/delivery-overview.png)
 
 <details>
 <summary>🇬🇧 English Legend</summary>
-
-| Italian Term   | English Translation  |
-|----------------|-------------------|
-| Persona        | Person            |
-| Lavoratore     | Worker            |
-| Cliente        | Customer          |
-| Pagamento      | Payment           |
-| Fattorino      | Rider             |
-| Dipendente     | Employee          |
-| Ordine         | Order             |
-| Locale         | Shop              |
-| Ingrediente    | Ingredient        |
-| Piadina        | Sandwhich         |
-| Richiesta      | Request           |
-| Esecuzione     | Execution         |
-| Consegna       | Delivery          |
-| Impiego        | Contract          |
-| Inventario     | Inventory         |
-| Composizione   | Composition       |
-| Contenuto      | Content           |
+| Italian Term       | English Translation           |
+|-------------------|--------------------------------|
+| Arrivo             | Arrival                       |
+| Cliente            | Customer                      |
+| Consegna           | Delivery                      |
+| DataConsegna       | Delivery Date                 |
+| Distanza           | Distance                      |
+| Fattorino          | Delivery Person               |
+| Incarico           | Contract                      |
+| Locale             | Location / Store              |
+| MetodoConsegna     | Delivery Method               |
+| OraConsegna        | Delivery Time                 |
+| Ordine             | Order                         |
+| Partenza           | Departure                     |
+| PrezzoConsegna     | Delivery Price                |
 
 </details>
 
 The final schema is obtained by integrating all partial schemas produced so far.
 
-![UML Diagram](uml/)
+![UML Diagram](uml/final-overview.png)
 
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term   | English Translation  |
-|----------------|-------------------|
-| Persona        | Person            |
-| Lavoratore     | Worker            |
-| Cliente        | Customer          |
-| Pagamento      | Payment           |
-| Fattorino      | Rider             |
-| Dipendente     | Employee          |
-| Ordine         | Order             |
-| Locale         | Shop              |
-| Ingrediente    | Ingredient        |
-| Piadina        | Sandwhich         |
-| Richiesta      | Request           |
-| Esecuzione     | Execution         |
-| Consegna       | Delivery          |
-| Impiego        | Contract          |
-| Inventario     | Inventory         |
-| Composizione   | Composition       |
-| Contenuto      | Content           |
+| Italian Term               | English Translation              |
+|----------------------------|----------------------------------|
+| Arrivo                     | Arrival                          |
+| CAP                        | Postal Code / ZIP Code           |
+| Categoria                  | Category                         |
+| Cliente                    | Customer                         |
+| CodFiscale                 | Tax Code / SSN                   |
+| CodIngrediente             | Ingredient Code                  |
+| CodPiadina                 | Sandwich Code                    |
+| Composizione               | Composition                      |
+| Consegna                   | Delivery                         |
+| Contratto                  | Contract                         |
+| ContrattoPassato           | Past Contract                    |
+| DataConsegna               | Delivery Date                    |
+| DataEsecuzione             | Execution Date                   |
+| DataFine                   | End Date                         |
+| DataInizio                 | Start Date                       |
+| DataScadenza               | Expiration Date                  |
+| DataTransazione            | Transaction Date                 |
+| DettaglioOrdini            | Order Details                    |
+| Descrizione                | Description                      |
+| Dipendente                 | Employee                         |
+| Distanza                   | Distance                         |
+| Email                      | Email                            |
+| Eta                        | Age                              |
+| Fattorino                  | Delivery Person                  |
+| IDOrdine                   | Order ID                         |
+| IDPagamento                | Payment ID                       |
+| Incarico                   | Contract                         |
+| Ingrediente                | Ingredient                       |
+| Inventario                 | Inventory                        |
+| Indirizzo                  | Address                          |
+| Lavoratore                 | Worker                           |
+| Locale                     | Store                            |
+| MetodoConsegna             | Delivery Method                  |
+| MetodoPagamento            | Payment Method                   |
+| NumCartaId                 | ID Card Number                   |
+| NumCivico                  | Street Number                    |
+| NumPiano                   | Floor Number                     |
+| NumPiadine                 | Number of Sandwiches             |
+| NumTelefono                | Phone Number                     |
+| OraConsegna                | Delivery Time                    |
+| OraTransazione             | Transaction Time                 |
+| Ordine                     | Order                            |
+| Pagamento                  | Payment                          |
+| Partenza                   | Departure                        |
+| PartitaIVA                 | VAT Number                       |
+| Piadina                    | Sandwich                         |
+| PesoDisponibile            | Available Weight                 |
+| Prezzo                     | Price                            |
+| PrezzoConsegna             | Delivery Price                   |
+| PrezzoTotaleOrdine         | Total Order Price                |
+| PrezzoTotalePiadina        | Sandwich Total Price             |
+| PrezzoUnitario             | Unit Price                       |
+| Regione                    | Region                           |
+| SiglaProvincia             | Province Abbreviation            |
+| Settore                    | Sector                           |
+| Stipendio                  | Salary                           |
+| Strada                     | Street                           |
+| Tipo                       | Type                             |
+| Transazione                | Transaction                      |
+
 
 </details>
 

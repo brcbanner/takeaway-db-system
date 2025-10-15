@@ -163,3 +163,36 @@ Each phase of the order — request, delivery, and payment — is recorded with 
 #### 💳 Sentences Related to Transactions
 
 Each `Transaction` is recorded with a payment code and payment method and is associated with a specific `Order`.
+
+---
+
+#### 1.3.1 On Operations
+
+Alongside the data specifications, the specifications of the operations to be performed on the data and their average frequencies are collected.
+
+| **Operation** | **Description** | **Average Frequency** |
+|----------------|------------------|------------------------|
+| **Operation 1** | Remove expired ingredients from the inventory | Once a day |
+| **Operation 2** | Check the available weight of an ingredient against a certain limit | Several times a day |
+| **Operation 3** | Print the chain’s menu, i.e., a list of available sandwiches | Several times a day |
+| **Operation 4** | Print the receipt of an order | 20 times a day |
+| **Operation 5** | Print a daily delivery report | Once a day |
+| **Operation 6** | Create a historical record of orders for a specific customer | 10 times a day |
+| **Operation 7** | Select the 3 best among riders, shops, customers, and orders | Once a month |
+| **Operation 8** | Calculate the total sales made in a specific month and year | 5 times a month |
+| **Operation 9** | Calculate the number of sandwiches in an order | 20 times a day |
+
+### 1.4 Conceptual Data Representation
+
+Following the analysis and gathering of requirements, we proceed to the conceptual representation of data, which ultimately leads to the creation of the conceptual schema.
+We first identify the most relevant concepts, which, in our context, are: Customers, Employees, Riders, Stores, Ingredients, Sandwich, Orders, and Payments. They define a **skeleton system**.
+
+- An `order` is a combination of several activities: the `customer`’s *request* for a certain number of `sandwiches`, *delivery* from a `shop` through a `rider`, and the successful *execution* of the `payment` by the customer.
+
+- Both rider and employee are `workers`; however, an `employee`, unlike a rider, has a *contract* with a specific store.
+
+- Similarly, a customer and a worker can be considered as a single `person`.
+
+- Each store owns its own *inventory*, composed of available `ingredients` which are *composed* to create the sandwiches — the main *content* of each order.
+
+`Objects` are transformed into **entities**, and the *relationships* among them are represented as **relations** (each term is expressed as its singular noun form).

@@ -44,7 +44,7 @@ This document provides an in-depth explanation of the project, which implements 
 
 ### 1.1 Sample Owner Request
 
-A chain of takeaway sandwich shops, which has _locations_ in the main cities of Italy, needs a well-organized database to handle information about customers, orders, workers, inventory, and shops.
+A chain of takeaway sandwich _shops_, which has _locations_ in the main cities of Italy, needs a well-organized database to handle information about customers, orders, workers, inventory, and shops.
 
 For each customer, their personal information is recorded, including first name, last name, age, email, tax code, phone number, _address_, and possibly the _floor_.
 
@@ -80,13 +80,13 @@ This text presents a number of ambiguities and imprecisions. At this stage, it i
   - `People who work independently` → freelance workers
 
 - **Identify synonyms and homonyms** to clarify ambiguities:
-  - `Location`, `store`, and `point of sale` → shop 
+  - `Location`, `shop`, and `point of sale` → store
 
 - **Make references between terms explicit:**
   - `Freelance workers` → riders
 
 - **Indicate the unit of measurement** for all quantities:
-  - `Unit price` → euro per kg  
+  - `Unit price` → euro per kg 
   - `Available weight` → kilograms  
   - `Distance` → kilometers  
   - `Price` and `total order price` → euro
@@ -104,7 +104,7 @@ To clarify and understand the terms used, a glossary of terms is presented below
 | `Riders` | Workers of the chain, with a VAT number, who deliver the orders. | `Self-employed workers` | `Staff` |
 | `Address` | Address of the customer or a store, including region, province, postal code, street/square, and street number. | — | `Customer`, `Order`, `Store` |
 | `Workers` | Staff employed in each store, i.e., employees. Also includes self-employed ones. | `Staff`, `Employees` | `Store`, `Worker` |
-| `Shop` | A store of the chain. | `Location`, `Store`, `Point of sale` | `Worker`, `Order` |
+| `Store` | A store of the chain. | `Location`, `Shop`, `Point of sale` | `Worker`, `Order` |
 | `Contract period` | Start and end date of a work contract. | — | `Staff` |
 | `Floor` | Number of the floor of an apartment. | — | `Customer` |
 | `Available quantity` | Available weight. | — | `Ingredient` |
@@ -196,3 +196,304 @@ We first identify the most relevant concepts, which, in our context, are: Custom
 - Each store owns its own *inventory*, composed of available `ingredients` which are *composed* to create the sandwiches — the main *content* of each order.
 
 `Objects` are transformed into **entities**, and the *relationships* among them are represented as **relations** (each term is expressed as its singular noun form).
+
+![UML Diagram](uml/begin.png)
+
+<details>
+<summary>🇬🇧 English Legend</summary>
+
+| Italian Term   | English Translation  |
+|----------------|-------------------|
+| Persona        | Person            |
+| Lavoratore     | Worker            |
+| Cliente        | Customer          |
+| Pagamento      | Payment           |
+| Fattorino      | Rider             |
+| Dipendente     | Employee          |
+| Ordine         | Order             |
+| Locale         | Shop              |
+| Ingrediente    | Ingredient        |
+| Piadina        | Sandwhich         |
+| Richiesta      | Request           |
+| Esecuzione     | Execution         |
+| Consegna       | Delivery          |
+| Impiego        | Contract          |
+| Inventario     | Inventory         |
+| Composizione   | Composition       |
+| Contenuto      | Content           |
+
+</details>
+
+We now analyze all the entities and the relationships among them, indicating their attributes.
+
+We begin with the Person entity.
+This is the parent entity of both Worker and Customer; thus, the generalization is total and overlapping.
+In turn, Worker is divided into Employee and Rider; this second generalization is total and exclusive.
+
+![UML Diagram](uml/)
+
+<details>
+<summary>🇬🇧 English Legend</summary>
+
+| Italian Term   | English Translation  |
+|----------------|-------------------|
+| Persona        | Person            |
+| Lavoratore     | Worker            |
+| Cliente        | Customer          |
+| Pagamento      | Payment           |
+| Fattorino      | Rider             |
+| Dipendente     | Employee          |
+| Ordine         | Order             |
+| Locale         | Shop              |
+| Ingrediente    | Ingredient        |
+| Piadina        | Sandwhich         |
+| Richiesta      | Request           |
+| Esecuzione     | Execution         |
+| Consegna       | Delivery          |
+| Impiego        | Contract          |
+| Inventario     | Inventory         |
+| Composizione   | Composition       |
+| Contenuto      | Content           |
+
+</details>
+
+Each Employee has only one contract with a Store; therefore, the Employee entity is connected through a one-to-many relationship called Contract with the Store entity.
+To record previous employment, we use a second many-to-many relationship called PastContract.
+These two relationships share almost the same attributes, but the first one includes an attribute Type, defining whether the contract is fixed-term or permanent. Based on this, there may or may not be an EndDate.
+
+![UML Diagram](uml/)
+
+<details>
+<summary>🇬🇧 English Legend</summary>
+
+| Italian Term   | English Translation  |
+|----------------|-------------------|
+| Persona        | Person            |
+| Lavoratore     | Worker            |
+| Cliente        | Customer          |
+| Pagamento      | Payment           |
+| Fattorino      | Rider             |
+| Dipendente     | Employee          |
+| Ordine         | Order             |
+| Locale         | Shop              |
+| Ingrediente    | Ingredient        |
+| Piadina        | Sandwhich         |
+| Richiesta      | Request           |
+| Esecuzione     | Execution         |
+| Consegna       | Delivery          |
+| Impiego        | Contract          |
+| Inventario     | Inventory         |
+| Composizione   | Composition       |
+| Contenuto      | Content           |
+
+</details>
+
+Each Rider can deliver more than one order, but not vice versa; thus, there is a one-to-many relationship called Delivery between Order and Rider.
+
+![UML Diagram](uml/)
+
+<details>
+<summary>🇬🇧 English Legend</summary>
+
+| Italian Term   | English Translation  |
+|----------------|-------------------|
+| Persona        | Person            |
+| Lavoratore     | Worker            |
+| Cliente        | Customer          |
+| Pagamento      | Payment           |
+| Fattorino      | Rider             |
+| Dipendente     | Employee          |
+| Ordine         | Order             |
+| Locale         | Shop              |
+| Ingrediente    | Ingredient        |
+| Piadina        | Sandwhich         |
+| Richiesta      | Request           |
+| Esecuzione     | Execution         |
+| Consegna       | Delivery          |
+| Impiego        | Contract          |
+| Inventario     | Inventory         |
+| Composizione   | Composition       |
+| Contenuto      | Content           |
+
+</details>
+
+Each Customer can place multiple orders and, consequently, perform multiple payments; however, each order is requested and paid for by one and only one customer.
+
+![UML Diagram](uml/)
+
+<details>
+<summary>🇬🇧 English Legend</summary>
+
+| Italian Term   | English Translation  |
+|----------------|-------------------|
+| Persona        | Person            |
+| Lavoratore     | Worker            |
+| Cliente        | Customer          |
+| Pagamento      | Payment           |
+| Fattorino      | Rider             |
+| Dipendente     | Employee          |
+| Ordine         | Order             |
+| Locale         | Shop              |
+| Ingrediente    | Ingredient        |
+| Piadina        | Sandwhich         |
+| Richiesta      | Request           |
+| Esecuzione     | Execution         |
+| Consegna       | Delivery          |
+| Impiego        | Contract          |
+| Inventario     | Inventory         |
+| Composizione   | Composition       |
+| Contenuto      | Content           |
+
+</details>
+
+However, the two relationships Execution and Request are not sufficient, because there is no logical connection between Order and Payment: as it stands, a customer could make a payment without an order, or an order could exist without payment.
+Therefore, it is necessary to introduce a ternary relationship Transaction among Customer, Payment, and Order.
+This resolves the ambiguity and ensures a unified and centralized interaction.
+As a result, the order request and the payment execution occur simultaneously.
+
+![UML Diagram](uml/)
+
+<details>
+<summary>🇬🇧 English Legend</summary>
+
+| Italian Term   | English Translation  |
+|----------------|-------------------|
+| Persona        | Person            |
+| Lavoratore     | Worker            |
+| Cliente        | Customer          |
+| Pagamento      | Payment           |
+| Fattorino      | Rider             |
+| Dipendente     | Employee          |
+| Ordine         | Order             |
+| Locale         | Shop              |
+| Ingrediente    | Ingredient        |
+| Piadina        | Sandwhich         |
+| Richiesta      | Request           |
+| Esecuzione     | Execution         |
+| Consegna       | Delivery          |
+| Impiego        | Contract          |
+| Inventario     | Inventory         |
+| Composizione   | Composition       |
+| Contenuto      | Content           |
+
+</details>
+
+The Store entity is uniquely identified by the province code (e.g., FI for Florence), since the chain owns only one store per city.
+The Inventory relationship between Store and Ingredient records the UnitPrice, which is not stored in Ingredient because it can vary depending on the geographic location of the store.
+
+![UML Diagram](uml/)
+
+<details>
+<summary>🇬🇧 English Legend</summary>
+
+| Italian Term   | English Translation  |
+|----------------|-------------------|
+| Persona        | Person            |
+| Lavoratore     | Worker            |
+| Cliente        | Customer          |
+| Pagamento      | Payment           |
+| Fattorino      | Rider             |
+| Dipendente     | Employee          |
+| Ordine         | Order             |
+| Locale         | Shop              |
+| Ingrediente    | Ingredient        |
+| Piadina        | Sandwhich         |
+| Richiesta      | Request           |
+| Esecuzione     | Execution         |
+| Consegna       | Delivery          |
+| Impiego        | Contract          |
+| Inventario     | Inventory         |
+| Composizione   | Composition       |
+| Contenuto      | Content           |
+
+</details>
+
+The Order entity includes the attribute TotalOrderPrice, which equals the sum of the DeliveryPrice and the total price of all piadinas ordered (calculated as the sum of TotalPiadinaPrice for each piadina type in the order).
+Since it is essential to track the details of the ordered piadinas — i.e., their number and price — we make the relationship between Order and Piadina explicit, naming it OrderDetails and recording NumPiadinas and TotalPiadinaPrice.
+Distance can also be derived from the difference between the customer’s and store’s addresses; therefore, it makes sense to associate the Delivery also with Customer.
+
+![UML Diagram](uml/)
+
+<details>
+<summary>🇬🇧 English Legend</summary>
+
+| Italian Term   | English Translation  |
+|----------------|-------------------|
+| Persona        | Person            |
+| Lavoratore     | Worker            |
+| Cliente        | Customer          |
+| Pagamento      | Payment           |
+| Fattorino      | Rider             |
+| Dipendente     | Employee          |
+| Ordine         | Order             |
+| Locale         | Shop              |
+| Ingrediente    | Ingredient        |
+| Piadina        | Sandwhich         |
+| Richiesta      | Request           |
+| Esecuzione     | Execution         |
+| Consegna       | Delivery          |
+| Impiego        | Contract          |
+| Inventario     | Inventory         |
+| Composizione   | Composition       |
+| Contenuto      | Content           |
+
+</details>
+
+At this point, we notice that Delivery has become an association involving four entities and contains several attributes; therefore, it is more convenient to treat it as an entity itself, identified externally by the combination of Customer, Rider, Order, and Store.
+
+![UML Diagram](uml/)
+
+<details>
+<summary>🇬🇧 English Legend</summary>
+
+| Italian Term   | English Translation  |
+|----------------|-------------------|
+| Persona        | Person            |
+| Lavoratore     | Worker            |
+| Cliente        | Customer          |
+| Pagamento      | Payment           |
+| Fattorino      | Rider             |
+| Dipendente     | Employee          |
+| Ordine         | Order             |
+| Locale         | Shop              |
+| Ingrediente    | Ingredient        |
+| Piadina        | Sandwhich         |
+| Richiesta      | Request           |
+| Esecuzione     | Execution         |
+| Consegna       | Delivery          |
+| Impiego        | Contract          |
+| Inventario     | Inventory         |
+| Composizione   | Composition       |
+| Contenuto      | Content           |
+
+</details>
+
+The final schema is obtained by integrating all partial schemas produced so far.
+
+![UML Diagram](uml/)
+
+<details>
+<summary>🇬🇧 English Legend</summary>
+
+| Italian Term   | English Translation  |
+|----------------|-------------------|
+| Persona        | Person            |
+| Lavoratore     | Worker            |
+| Cliente        | Customer          |
+| Pagamento      | Payment           |
+| Fattorino      | Rider             |
+| Dipendente     | Employee          |
+| Ordine         | Order             |
+| Locale         | Shop              |
+| Ingrediente    | Ingredient        |
+| Piadina        | Sandwhich         |
+| Richiesta      | Request           |
+| Esecuzione     | Execution         |
+| Consegna       | Delivery          |
+| Impiego        | Contract          |
+| Inventario     | Inventory         |
+| Composizione   | Composition       |
+| Contenuto      | Content           |
+
+</details>
+

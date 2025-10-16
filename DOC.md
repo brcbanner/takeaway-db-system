@@ -235,28 +235,29 @@ In turn, Worker is divided into Employee and Rider; this second generalization i
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term          | English Translation       |
-|-----------------------|--------------------------|
-| CAP                   | Postal Code / ZIP Code   |
-| Cliente               | Customer                 |
-| CodFiscale            | Tax Code                 |
-| Cognome               | Last Name / Surname      |
-| Dipendente Fattorino  | Employee / Delivery Person |
-| Email                 | Email                    |
-| Eta                   | Age                      |
-| Indirizzo             | Address                  |
-| Lavoratore            | Worker                   |
-| Nome                  | First Name               |
-| NumCartaId            | ID Card Number           |
-| NumCivico             | Street Number            |
-| NumPassaporto         | Passport Number          |
-| NumPiano              | Floor Number             |
-| NumTelefono           | Phone Number             |
-| PartitaIVA            | VAT Number               |
-| Persona               | Person                   |
-| Regione               | Region                   |
-| Provincia             | Province                 |
-| Strada                | Street                   |
+| Italian Term          | English Translation            |
+|-----------------------|--------------------------------|
+| CAP                   | Postal Code / ZIP Code         |
+| Cliente               | Customer                       |
+| CodFiscale            | Tax Code                       |
+| Cognome               | Last Name / Surname            |
+| Dipendente            | Employee                       |
+| Email                 | Email                          |
+| Eta                   | Age                            |
+| Fattorino             | Rider                          |
+| Indirizzo             | Address                        |
+| Lavoratore            | Worker                         |
+| Nome                  | First Name                     |
+| NumCartaId            | ID Card Number                 |
+| NumCivico             | Street Number                  |
+| NumPassaporto         | Passport Number                |
+| NumPiano              | Floor Number                   |
+| NumTelefono           | Phone Number                   |
+| PartitaIVA            | VAT Number                     |
+| Persona               | Person                         |
+| Regione               | Region                         |
+| Provincia             | Province                       |
+| Strada                | Street                         |
 | TitoloProfessionale   | Job Title / Professional Title |
 
 </details>
@@ -270,16 +271,16 @@ These two relationships share almost the same attributes, but the first one incl
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term                 | English Translation            |
+| Italian Term                  | English Translation           |
 |-------------------------------|-------------------------------|
-| Contratto                      | Contract                      |
-| ContrattoPassato               | Past / Previous Contract      |
+| Contratto                     | Contract                      |
+| ContrattoPassato              | Past / Previous Contract      |
 | DataFine                      | End Date                      |
 | DataInizio                    | Start Date                    |
-| DataInizio DataFine            | Start Date / End Date         |
-| Dipendente                     | Employee                      |
-| Locale                         | Location / Store              |
-| Stipendio Settore              | Salary / Sector               |
+| DataInizio DataFine           | Start Date / End Date         |
+| Dipendente                    | Employee                      |
+| Locale                        | Location / Store              |
+| Stipendio Settore             | Salary / Sector               |
 | Tipo                          | Type                          |
 | TitoloProfessionale Contratto | Job Title (Contract)          |
 
@@ -376,7 +377,7 @@ The Inventory relationship between Store and Ingredient records the UnitPrice, w
 | CAP                  | Postal Code / ZIP Code        |
 | Categoria            | Category                      |
 | CodIngrediente       | Ingredient Code               |
-| CodPiadina Nome      | Sandwich Code & Name          |
+| CodPiadina           | Sandwich Code                 |
 | Composizione         | Composition                   |
 | Consegna             | Delivery                      |
 | Contratto            | Contract                      |
@@ -424,15 +425,15 @@ Distance can also be derived from the difference between the customer’s and st
 | IDOrdine                   | Order ID                      |
 | Locale                     | Location / Store              |
 | MetodoConsegna             | Delivery Method               |
-| NumPiadine                 | Number of Flatbreads          |
+| NumPiadine                 | Number of Sandwiches          |
 | Ordine                     | Order                         |
 | Ordini                     | Orders                        |
 | OraConsegna                | Delivery Time                 |
 | OraTransazione             | Transaction Time              |
 | Pagamento                  | Payment                       |
-| Piadina                    | Flatbread                     |
+| Piadina                    | Sandwich                      |
 | PrezzoConsegna             | Delivery Price                |
-| PrezzoTotalePiadina        | Flatbread Total Price         |
+| PrezzoTotalePiadina        | Sandwich Total Price          |
 | PrezzoTotaleOrdine         | Total Order Price             |
 
 </details>
@@ -530,6 +531,117 @@ The final schema is obtained by integrating all partial schemas produced so far.
 | Tipo                       | Type                             |
 | Transazione                | Transaction                      |
 
-
 </details>
 
+### 1.5 Documentation of the Conceptual Data Schema
+
+### UML Entities
+
+|**Entity**|**Description**|**Attributes**|**Identifiers**|
+|-----------|---------------|---------------|----------------|
+|**Person**|Generic individual|Name, Surname, TaxCode, PhoneNumber, Address (Region, Province, Street, PostalCode, StreetNumber)|TaxCode|
+|**Customer**|Person who places an order|Email, Age, FloorNumber|TaxCode|
+|**Worker**|Person who works for or within the chain|IDCardNumber, PassportNumber|TaxCode|
+|**Rider**|Worker who delivers orders|VATNumber|TaxCode|
+|**Employee**|Worker who works or has worked for a specific store|ProfessionalTitle|TaxCode|
+|**Store**|Structure belonging to the chain|ProvinceCode, Address (Region, Province, Street, PostalCode, StreetNumber)|ProvinceCode|
+|**Ingredient**|Raw material used to prepare piadinas|IngredientCode, Category, Name|IngredientCode|
+|**Sandwich**|Main product sold|SandwichCode, Name, Price, Description|SandwichCode|
+|**Order**|Order containing one or more piadinas for a customer|OrderID, TotalOrderPrice|OrderID|
+|**Payment**|Payment of the order by the customer|PaymentID, PaymentMethod|PaymentID|
+|**Delivery**|Delivery of an order, carried out by a rider from a store to a customer|DeliveryMethod, DeliveryPrice, DeliveryDate, DeliveryTime, Distance|Rider, Customer, Order, Store|
+
+### UML Constraint Rules
+
+|**ID**|**Rule Description**|
+|------|--------------------|
+|**CR1**|An order can be delivered if and only if the payment has been made.|
+|**CR2**|For each contract, if an EndDate exists, the StartDate must precede it.|
+|**CR3**|Every permanent contract must not have an EndDate.|
+|**CR4**|Every fixed-term contract must have an EndDate.|
+|**CR5**|Each worker must possess either an IDCardNumber or a PassportNumber.|
+|**CR6**|Each customer can place orders only from the store in their province.|
+
+### UML Relationships
+
+|**Relationship**|**Description**|**Related Entities**|**Attributes**|
+|----------------|----------------|--------------------|---------------|
+|**Contract**|Specifies the details of a contract between a store and an employee.|Employee - Store|StartDate, EndDate, Sector, Salary, Type|
+|**Past Contract**|Specifies completed employment contracts.|Employee - Contract|StartDate, EndDate, Sector, Salary|
+|**Inventory**|Represents the food stock of a store.|Store - Ingredient|AvailableWeight, UnitPrice, ExpirationDate|
+|**Composition**|Specifies the ingredients of a sandwich.|Sandwich - Ingredient|-|
+|**Order Details**|Lists the details of the sandwiches in an order.|Order - Sandwich|NumberOfSandwiches, TotalSandwichPrice|
+|**Transaction**|Associates an order with a payment from a specific customer.|Order - Payment - Customer|TransactionDate, TransactionTime|
+|**Departure**|Indicates the store from which the delivery starts.|Delivery - Store|-|
+|**Arrival**|Associates the customer with the delivery.|Delivery - Customer|-|
+|**Transport**|Specifies the rider assigned to the delivery.|Delivery - Rider|-|
+|**Assignment**|Associates an order with a delivery.|Delivery - Order|-|
+
+## 2. LOGICAL DESIGN
+
+### 2.1 E-R Schema Restructuring
+
+#### 2.1.1 Redundancy Analysis
+The E-R schema contains some redundant attributes:
+
+- **DeliveryPrice** in `Delivery`, which can be derived, within the same entity, from the attributes *DeliveryMethod* and *Distance*.
+
+  ```text
+  DeliveryPrice_Distance = Distance × 0.2
+  DeliveryPrice_Method = (DeliveryMethod = 'Express') ? 3 : 0
+  DeliveryPrice = DeliveryPrice_Distance + DeliveryPrice_Method
+  ```
+
+- **TotalSandwichTypePrice** in `OrderDetails`, which can be obtained, through `OrderDetails` and `Sandwich`, by multiplying the price of the specific type of sandwich (*Price*) by the number of sandwiches of that type (*NumSandwiches*).
+
+  ```text
+  TotalSandwichTypePrice = Price × NumSandwiches
+  ```
+
+- **TotalOrderPrice** in `Order`, which is derived, through `OrderDetails`, `Sandwich`, and `Delivery`, as the sum of all the sandwiches ordered (or equivalently, the sum of *TotalSandwichTypePrice* for each different type, i.e., for each *SandwichCode* present in the order) plus the *DeliveryPrice*.
+
+  ```text
+  for (type ∈ SandwichCode)
+    TotalSandwichesPrice = TotalSandwichesPrice + TotalSandwichTypePrice
+  TotalOrderPrice = TotalSandwichesPrice + DeliveryPrice
+  ```
+We consider only operations 4, 5, 6, and 8, which are the only operations that handle the *TotalOrderPrice*, as it also involves the other redundant attributes. For the purpose of analysis, the following load data assumptions are made.
+
+## Volume and Operation Tables
+
+### Table of Volumes
+
+| **Concept** | **Type** | **Volume** |
+|--------------|-----------|-------------|
+| Person | E | 10,000 |
+| Customer | E | 9,500 |
+| Worker | E | 500 |
+| Rider | E | 250 |
+| Employee | E | 250 |
+| Store | E | 25 |
+| Ingredient | E | 100 |
+| Sandwich | E | 15 |
+| Order | E | 20,000 |
+| Payment | E | 20,000 |
+| Delivery | E | 20,000 |
+| Contract | R | 250 |
+| Past Contract | R | 200 |
+| Inventory | R | 1,500 |
+| Composition | R | 1,000 |
+| OrderDetails | R | 40,000 |
+| Transaction | R | 20,000 |
+| Departure | R | 20,000 |
+| Arrival | R | 20,000 |
+| Transport | R | 20,000 |
+| Assignment | R | 20,000 |
+
+---
+
+### Table of Operations
+
+| **Operation** | **Frequency** |
+|----------------|----------------|
+| Op.4 | 20/day |
+| Op.5 | 1/day |
+| Op.6 | 10/day |
+| Op.8 | 5/month |

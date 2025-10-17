@@ -1,11 +1,9 @@
 # Detailed Documentation: takeaway-db-system
-
 This document provides an in-depth explanation of the project, which implements a management system for a database of piadines.
 
 ---
 
 ## 📚 Table of Contents
-
 - [Conceptual Design](#conceptual-design)
   - [Sample Owner Request](#sample-owner-request)
   - [Requirements Analysis](#requirements-analysis)
@@ -43,7 +41,6 @@ This document provides an in-depth explanation of the project, which implements 
 ## 1. CONCEPTUAL DESIGN
 
 ### 1.1 Sample Owner Request
-
 A chain of takeaway sandwich _shops_, which has _locations_ in the main cities of Italy, needs a well-organized database to handle information about customers, orders, workers, inventory, and shops.
 
 For each customer, their personal information is recorded, including first name, last name, age, email, tax code, phone number, _address_, and possibly the _floor_.
@@ -65,7 +62,6 @@ Each order is linked to a payment transaction with a payment code and method. Fo
 ---
 
 ### 1.2 Requirements Analysis
-
 This text presents a number of ambiguities and imprecisions. At this stage, it is important to:
 
 - **Avoid overly generic terms**, which make a concept unclear, and replace them with more meaningful ones or define them clearly:
@@ -115,14 +111,12 @@ To clarify and understand the terms used, a glossary of terms is presented below
 ### 1.3 Requirements Gathering
 
 #### 1.3.1 On Data
-
 Following the request and the glossary, we proceed with the requirements gathering — that is, the identification of the characteristics that our database must possess.  
 After reformulating certain terms and removing ambiguities, the text is broken down into groups of related sentences.
 
 ---
 
 #### 🧑‍💼 Sentences Related to Workers
-
 Each `Worker` is recorded with personal information such as first name, last name, phone number, tax code, and ID card number (or passport number).  
 For the `Staff`, additional useful details are stored, such as professional title, type of contract (fixed-term or permanent), salary, work area, employment start and end dates (for fixed-term contracts only), and previous work experience.  
 `Riders`, on the other hand, are self-employed workers with a VAT number and are not associated with a specific `Store`.  
@@ -131,7 +125,6 @@ Each worker, whether an employee or a rider, can also be a `Customer`.
 ---
 
 #### 🏪 Sentences Related to Stores
-
 The chain operates one `Store` in each city.  
 Each store is recorded with its `Address`, which includes region, province, postal code, street, and street number.  
 Every store has its own `Staff` and `Inventory`, managed independently from other locations.
@@ -139,20 +132,17 @@ Every store has its own `Staff` and `Inventory`, managed independently from othe
 ---
 
 #### 🧂 Sentences Related to Ingredients
-
 The `Inventory` includes all `Ingredients` used to prepare sandwiches.  
 Each ingredient is identified by a unique code, name, category (e.g., meat, fish, vegetables), unit price (in euros per kg), expiration date, and available weight (in kg).
 
 ---
 
 #### 🥪 Sentences Related to Sandwiches
-
 Each `Sandwich` is defined by a unique code, a name, a description, and a price.
 
 ---
 
 #### 🧾 Sentences Related to Orders
-
 Each `Order`, placed by a `Customer`, is delivered by a `Rider` from a specific `Store`.  
 Orders are recorded with a unique code and the total order price.  
 The delivery fee varies depending on the delivery type and the distance between the customer and the store.  
@@ -161,13 +151,11 @@ Each phase of the order — request, delivery, and payment — is recorded with 
 ---
 
 #### 💳 Sentences Related to Transactions
-
 Each `Transaction` is recorded with a payment code and payment method and is associated with a specific `Order`.
 
 ---
 
 #### 1.3.1 On Operations
-
 Alongside the data specifications, the specifications of the operations to be performed on the data and their average frequencies are collected.
 
 | **Operation** | **Description** | **Average Frequency** |
@@ -183,7 +171,6 @@ Alongside the data specifications, the specifications of the operations to be pe
 | **Operation 9** | Calculate the number of sandwiches in an order | 20 times a day |
 
 ### 1.4 Conceptual Data Representation
-
 Following the analysis and gathering of requirements, we proceed to the conceptual representation of data, which ultimately leads to the creation of the conceptual schema.
 We first identify the most relevant concepts, which, in our context, are: Customers, Employees, Riders, Stores, Ingredients, Sandwich, Orders, and Payments. They define a **skeleton system**.
 
@@ -605,7 +592,7 @@ The E-R schema contains some redundant attributes:
     TotalSandwichesPrice = TotalSandwichesPrice + TotalSandwichTypePrice
   TotalOrderPrice = TotalSandwichesPrice + DeliveryPrice
   ```
-We consider only operations 4, 5, 6, and 8, which are the only operations that handle the *TotalOrderPrice*, as it also involves the other redundant attributes. For the purpose of analysis, the following load data assumptions are made.
+We consider only operations 4, 5, 6, and 8, which are the only operations that handle the *TotalOrderPrice*, which also involves the other redundant attributes. For the purpose of analysis, the following load data assumptions are made.
 
 ## Volume and Operation Tables
 
@@ -645,3 +632,26 @@ We consider only operations 4, 5, 6, and 8, which are the only operations that h
 | Op.5 | 1/day |
 | Op.6 | 10/day |
 | Op.8 | 5/month |
+
+---
+
+### Analysis of DeliveryPrice
+Assuming each of the 25 store has performed an average of 800 deliveries, there are 20,000 total deliveries for the chain. Storing `DeliveryPrice` requires 20,000 bytes (20KB) of additional memory. Whether the data is redundant or not, obtaining `DeliveryPrice` requires a single read access to `Order`, `Assignment`, and `Delivery`. However, in the absence of the redundant data, calculating it requires three distinct operations (a product, a conditional expression, and a sum), although the total complexity is constant. Given that the number of accesses per day (20 times per day for Operation 4, totaling 60 read accesses per day) is the same, and the number of deliveries can increase significantly over time, it is convenient to **eliminate this redundant data**.
+
+### Analysis of TotalSandwichTypePrice
+This attribute can be derived, for each different type of sandwich (i.e., for each `SandwichCode`), by multiplying the sandwich's `Price` by the `NumberOfSandwiches`. However, this datum is not essential for calculating `TotalOrderPrice`, which can be computed directly by summing the price of each sandwich associated with the same `OrderID`. Since the same procedure would be executed for each type of sandwich to determine `TotalSandwichTypePrice`, we can directly **eliminate TotalSandwichTypePrice**.
+
+### Analysis of TotalOrderPrice
+
+#### Case with redundancy
+Since the total number of deliveries is 20,000, 20KB of additional memory is required to store the attribute. To determine `TotalOrderPrice` in this case, only one access to `Order` is required, resulting in 20 accesses per day.
+
+#### Case without redundancy
+Calculating TotalOrderPrice requires accessing several constructs: first Order, then Delivery (via Assignment) to calculate DeliveryPrice, and subsequently Sandwich (via OrderDetails) to find the prices of all ordered piadinas. Given that the volumes of OrderDetails (40,000) and Delivery (20,000) suggest that, on average, each delivery includes about 2 sandwiches, the number of accesses to OrderDetails and Sandwich is approximately 2. The total daily accesses needed for Operation 4 would be 20 * (1 [Order] + 1 [Assignment] + 1 [Delivery] + 2 [OrderDetails] + 2 [Sandwich]) = 140 accesses.
+
+### Choice
+The choice between mantaining or removing `TotalOrderPrice` is not trivial and is *deferred to the physical design phase*; however, for the logical design, the attribute is **mantained**.
+
+#### 2.1.2 Redundancy Analysis
+
+

@@ -1,10 +1,12 @@
-# Detailed Documentation: takeaway-db-system
-This document provides an in-depth explanation of the project, which implements a management system for a database of piadines.
+# 🍽️ Takeaway Database Management System
+> **Project:** takeaway-db-system  
+> **Purpose:** Design and implementation of a database system for managing a piadina (Italian flatbread sandwich) takeaway chain.  
+> **Language:** SQL / MySQL
 
 ---
 
 ## 📚 Table of Contents
-- [Conceptual Design](#conceptual-design)
+1. [CONCEPTUAL DESIGN](#conceptual-design)
   - [Sample Owner Request](#sample-owner-request)
   - [Requirements Analysis](#requirements-analysis)
   - [Requirements Gathering](#requirements-gathering)
@@ -12,8 +14,7 @@ This document provides an in-depth explanation of the project, which implements 
     - [Operation Requirements](#operation-requirements)
   - [Conceptual Data Representation](#conceptual-data-representation)
   - [Documentation of the Conceptual Data Schema](#documentation-of-the-conceptual-data-schema)
-
-- [Logical Design](#logical-design)
+2. [LOGICAL DESIGN](#logical-design)
   - [E-R Schema Restructuring](#e-r-schema-restructuring)
     - [Redundancy Analysis](#redundancy-analysis)
     - [Removal of Generalizations](#removal-of-generalizations)
@@ -22,8 +23,7 @@ This document provides an in-depth explanation of the project, which implements 
     - [Restructured Schema](#restructured-schema)
   - [Translation to the Relational Model](#translation-to-the-relational-model)
     - [Logical Schema](#logical-schema)
-
-- [MySQL Implementation](#mysql-implementation)
+3. [MYSQL IMPLEMENTATION](#mysql-implementation)
   - [Procedures](#procedures)
     - [RemoveExpiredIngredients](#removeexpiredingredients)
     - [ListShopsWithLimitedIngredient](#listshopswithlimitedingredient)
@@ -41,7 +41,7 @@ This document provides an in-depth explanation of the project, which implements 
 ## 1. CONCEPTUAL DESIGN
 
 ### 1.1 Sample Owner Request
-A chain of takeaway sandwich _shops_, which has _locations_ in the main cities of Italy, needs a well-organized database to handle information about customers, orders, workers, inventory, and shops.
+A chain of takeaway sandwich _shops_, which has _locations_ in the main cities of Italy, needs a well-organized database to handle information about customers, orders, workers, inventory, and _shops_.
 
 For each customer, their personal information is recorded, including first name, last name, age, email, tax code, phone number, _address_, and possibly the _floor_.
 
@@ -91,11 +91,13 @@ To clarify and understand the terms used, a glossary of terms is presented below
 
 ---
 
-#### Glossary of Terms
+#### 📖 Glossary of Terms
+
+> **Purpose:** Clarify the key terms used throughout the conceptual and logical design.
 
 | **Term** | **Description** | **Synonyms** | **Related terms** |
 |-----------|-----------------|---------------|--------------------|
-| `Distance` | Distance between the store and the delivery address, i.e., the customer's residence. | — | `Order` |
+| `Distance` | Distance between the store and the delivery address (customer's residence). | — | `Order` |
 | `Documents for hiring` | Tax code and an identity document, i.e., ID card or passport. | — | `Worker`, `Store` |
 | `Riders` | Workers of the chain, with a VAT number, who deliver the orders. | `Self-employed workers` | `Staff` |
 | `Address` | Address of the customer or a store, including region, province, postal code, street/square, and street number. | — | `Customer`, `Order`, `Store` |
@@ -184,7 +186,9 @@ We first identify the most relevant concepts, which, in our context, are: Custom
 
 `Objects` are transformed into **entities**, and the *relationships* among them are represented as **relations** (each term is expressed as its singular noun form).
 
-![UML Diagram](uml/initial-overview.png)
+<p align="center">
+  <img src="uml/initial-overview.png" width="80%">
+</p>
 
 <details>
 <summary>🇬🇧 English Legend</summary>
@@ -217,7 +221,9 @@ We begin with the Person entity.
 This is the parent entity of both Worker and Customer; thus, the generalization is total and overlapping.
 In turn, Worker is divided into Employee and Rider; this second generalization is total and exclusive.
 
-![UML Diagram](uml/person-generalization.png)
+<p align="center">
+  <img src="uml/person-generalization.png" width="60%">
+</p>
 
 <details>
 <summary>🇬🇧 English Legend</summary>
@@ -253,7 +259,9 @@ Each Employee has only one contract with a Store; therefore, the Employee entity
 To record previous employment, we use a second many-to-many relationship called PastContract.
 These two relationships share almost the same attributes, but the first one includes an attribute Type, defining whether the contract is fixed-term or permanent. Based on this, there may or may not be an EndDate.
 
-![UML Diagram](uml/employee-store.png)
+<p align="center">
+  <img src="uml/employee-store.png" width="60%">
+</p>
 
 <details>
 <summary>🇬🇧 English Legend</summary>
@@ -275,7 +283,9 @@ These two relationships share almost the same attributes, but the first one incl
 
 Each Rider can deliver more than one order, but not vice versa; thus, there is a one-to-many relationship called Delivery between Order and Rider.
 
-![UML Diagram](uml/rider-order.png)
+<p align="center">
+  <img src="uml/rider-order.png" width="60%">
+</p>
 
 <details>
 <summary>🇬🇧 English Legend</summary>
@@ -297,7 +307,9 @@ Each Rider can deliver more than one order, but not vice versa; thus, there is a
 
 Each Customer can place multiple orders and, consequently, perform multiple payments; however, each order is requested and paid for by one and only one customer.
 
-![UML Diagram](uml/customer-payment-order-before.png)
+<p align="center">
+  <img src="uml/customer-payment-order-before.png" width="60%">
+</p>
 
 <details>
 <summary>🇬🇧 English Legend</summary>
@@ -327,7 +339,10 @@ Therefore, it is necessary to introduce a ternary relationship Transaction among
 This resolves the ambiguity and ensures a unified and centralized interaction.
 As a result, the order request and the payment execution occur simultaneously.
 
-![UML Diagram](uml/customer-payment-order-after.png)
+<p align="center">
+  <img src="uml/customer-payment-order-after.png" width="60%">
+</p>
+
 <details>
 <summary>🇬🇧 English Legend</summary>
 
@@ -354,7 +369,9 @@ As a result, the order request and the payment execution occur simultaneously.
 The Store entity is uniquely identified by the province code (e.g., FI for Florence), since the chain owns only one store per city.
 The Inventory relationship between Store and Ingredient records the UnitPrice, which is not stored in Ingredient because it can vary depending on the geographic location of the store.
 
-![UML Diagram](uml/store-overview.png)
+<p align="center">
+  <img src="uml/store-overview.png" width="70%">
+</p>
 
 <details>
 <summary>🇬🇧 English Legend</summary>
@@ -395,7 +412,9 @@ The Order entity includes the attribute TotalOrderPrice, which equals the sum of
 Since it is essential to track the details of the ordered piadinas — i.e., their number and price — we make the relationship between Order and Piadina explicit, naming it OrderDetails and recording NumPiadinas and TotalPiadinaPrice.
 Distance can also be derived from the difference between the customer’s and store’s addresses; therefore, it makes sense to associate the Delivery also with Customer.
 
-![UML Diagram](uml/order-overview.png)
+<p align="center">
+  <img src="uml/order-overview.png" width="65%">
+</p>
 
 <details>
 <summary>🇬🇧 English Legend</summary>
@@ -427,7 +446,9 @@ Distance can also be derived from the difference between the customer’s and st
 
 At this point, we notice that Delivery has become an association involving four entities and contains several attributes; therefore, it is more convenient to treat it as an entity itself, identified externally by the combination of Customer, Rider, Order, and Store.
 
-![UML Diagram](uml/delivery-overview.png)
+<p align="center">
+  <img src="uml/delivery-overview.png" width="60%">
+</p>
 
 <details>
 <summary>🇬🇧 English Legend</summary>
@@ -451,7 +472,9 @@ At this point, we notice that Delivery has become an association involving four 
 
 The final schema is obtained by integrating all partial schemas produced so far.
 
-![UML Diagram](uml/final-overview.png)
+<p align="center">
+  <img src="uml/final-overview.png" width="80%">
+</p>
 
 <details>
 <summary>🇬🇧 English Legend</summary>
@@ -667,7 +690,9 @@ Additionally, instead of using the external identifier for `Delivery` - which in
 
 #### 2.1.5 Restructered Schema
 
-![UML Diagram](uml/final.png)
+<p align="center">
+  <img src="uml/final.png" width="80%">
+</p>
 
 <details>
 <summary>🇬🇧 English Legend</summary>
@@ -792,63 +817,63 @@ Finally, the nine operations defined during the requirements gathering phase hav
 - No error handling required
 
 ### 3.1.2 ListStoresWithLimitedIngredient
-- Returns a list of stores where a specific ingredient is below a threshold.
+- Returns a list of stores where a specific ingredient is below a threshold
 - Input parameters:
-  - WeightLimit: maximum allowed weight.
-  - IngredientName: ingredient to check.
-- Returns the store list (ProvinceCode) and the corresponding AvailableWeight.
+  - WeightLimit: maximum allowed weight
+  - IngredientName: ingredient to check
+- Returns the store list (ProvinceCode) and the corresponding AvailableWeight
 - Error handling:
   - WeightLimit < 0
-  - IngredientName not found in Ingredient table.
+  - IngredientName not found in Ingredient table
 
 ### 3.1.3 ChainMenu
-- Generates a list of sandwiches available in the chain, with ingredients and price.
-- No input parameters, returns a joined list from Composition, Sandwich, and Ingredient.
-- No error handling required.
+- Generates a list of sandwiches available in the chain, with ingredients and price
+- No input parameters, returns a joined list from Composition, Sandwich, and Ingredient
+- No error handling required
 
 ### 3.1.4 PrintOrderReceipt
-- Generates a receipt for a specific order, including customer name, total price, and payment details.
-- Input: OrderID.
-- Returns one row from a join of Order, Payment, and Customer.
+- Generates a receipt for a specific order, including customer name, total price, and payment details
+- Input: OrderID
+- Returns one row from a join of Order, Payment, and Customer
 - Error handling:
   - OrderID does not match ^O_[0-9]+$
   - OrderID not found
   - OrderID exists but the order has not been delivered yet (so TotalOrderPrice = 0)
 
 ### 3.1.5 DailyDeliveryReport
-- Generates a daily delivery report with total deliveries and total earnings.
-- Input: Date.
-- Returns one row with COUNT(DeliveryID) AS TotalDeliveries and SUM(TotalOrderPrice) AS TotalEarnings.
+- Generates a daily delivery report with total deliveries and total earnings
+- Input: Date
+- Returns one row with COUNT(DeliveryID) AS TotalDeliveries and SUM(TotalOrderPrice) AS TotalEarnings
 - Error checks:
   - Date > CURDATE()
   - Date with no deliveries
 
 ### 3.1.6 CreateCustomerOrderHistory
-- Dynamically creates/updates a view CustomerOrderHistory with all orders of a specific customer, sorted from latest to earliest delivery.
-- Input: CustomerCode.
-- Creates a view via a dynamic query (@sql).
+- Dynamically creates/updates a view CustomerOrderHistory with all orders of a specific customer, sorted from latest to earliest delivery
+- Input: CustomerCode
+- Creates a view via a dynamic query (@sql)
 - Error handling:
   - CustomerCode does not match ^CL_[0-9]+$
   - CustomerCode not found
 
 ### 3.1.7 FindBest
-- Returns statistics of top performers in several categories (riders, stores, customers, most ordered sandwiches).
-- No input parameters.
-- Returns four lists with top three entries per category.
-- No error handling required.
+- Returns statistics of top performers in several categories (riders, stores, customers, most ordered sandwiches)
+- No input parameters
+- Returns four lists with top three entries per category
+- No error handling required
 
 ## 3.2 Functions
 
 ### 3.2.1 MonthlySalesTotal
-- Calculates total sales for a given month and year.
-- Input: Month, Year.
-- Output: formatted string indicating total sales.
-- Error: Month < 1 OR Month > 12.
+- Calculates total sales for a given month and year
+- Input: Month, Year
+- Output: formatted string indicating total sales
+- Error: Month < 1 OR Month > 12
 
-### 3.2.2 CountPiadinePerOrder
-- Returns the number of sandwiches in a specified order.
-- Input: OrderID.
-- Output: formatted string indicating total sandwiches.
+### 3.2.2 CountSandwichesPerOrder
+- Returns the number of sandwiches in a specified order
+- Input: OrderID
+- Output: formatted string indicating total sandwiches
 - Error handling:
   - OrderID does not match ^O_[0-9]+$
   - OrderID not found

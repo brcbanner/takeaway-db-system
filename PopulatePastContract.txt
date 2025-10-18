@@ -1,0 +1,10 @@
+E_1,MI,2018-01-01,2020-12-31,2500.50,Cooking and Food Preparation  
+E_2,RM,2019-03-01,2021-02-28,2800.00,Cooking and Food Preparation  
+E_3,NA,2020-06-15,2022-05-14,2200.75,Cooking and Food Preparation  
+E_4,FI,2019-07-01,2020-06-30,2300.50,Logistics and Warehouse  
+E_5,PA,2018-09-01,2020-08-31,2400.00,Logistics and Warehouse  
+E_6,TO,2020-10-01,2021-09-30,2000.00,Maintenance and Cleaning  
+E_7,VE,2017-11-01,2019-10-31,1800.00,Maintenance and Cleaning  
+E_8,BO,2016-05-01,2018-04-30,4800.00,Management and Supervision  
+E_9,CS,2018-01-01,2020-12-31,1950.25,Marketing and Promotion  
+E_10,LE,2019-01-01,2021-12-31,2050.00,Marketing and Promotion  

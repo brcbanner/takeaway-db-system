@@ -649,7 +649,7 @@ Since the total number of deliveries is 20,000, 20KB of additional memory is req
 #### Case without redundancy
 Calculating TotalOrderPrice requires accessing several constructs: first Order, then Delivery (via Assignment) to calculate DeliveryPrice, and subsequently Sandwich (via OrderDetails) to find the prices of all ordered piadinas. Given that the volumes of OrderDetails (40,000) and Delivery (20,000) suggest that, on average, each delivery includes about 2 sandwiches, the number of accesses to OrderDetails and Sandwich is approximately 2. The total daily accesses needed for Operation 4 would be 20 * (1 [Order] + 1 [Assignment] + 1 [Delivery] + 2 [OrderDetails] + 2 [Sandwich]) = 140 accesses.
 
-### Choice
+#### Choice
 The choice between mantaining or removing `TotalOrderPrice` is not trivial and is *deferred to the physical design phase*; however, for the logical design, the attribute is **mantained**.
 
 #### 2.1.2 Removing Generalizations
@@ -667,30 +667,192 @@ Additionally, instead of using the external identifier for `Delivery` - which in
 
 #### 2.1.5 Restructered Schema
 
-![UML Diagram](uml/initial-overview.png)
+![UML Diagram](uml/final.png)
 
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term   | English Translation  |
-|----------------|-------------------|
-| Cliente        | Customer          |
-| Composizione   | Composition       |
-| Consegna       | Delivery          |
-| Contenuto      | Content           |
-| Dipendente     | Employee          |
-| Esecuzione     | Execution         |
-| Fattorino      | Rider             |
-| Impiego        | Contract          |
-| Ingrediente    | Ingredient        |
-| Inventario     | Inventory         |
-| Lavoratore     | Worker            |
-| Locale         | Shop              |
-| Ordine         | Order             |
-| Pagamento      | Payment           |
-| Piadina        | Sandwhich         |
-| Persona        | Person            |
-| Richiesta      | Request           |
+| **Italian Term**    | **English Translation** |
+| ------------------- | ----------------------- |
+| Arrivo              | Arrival                 |
+| CAP                 | Postal Code             |
+| Categoria           | Category                |
+| Cliente             | Customer                |
+| CodCliente          | Customer Code           |
+| CodDipendente       | Employee Code           |
+| CodFattorino        | Rider Code              |
+| CodFiscale          | Tax Code                |
+| CodIngrediente      | Ingredient Code         |
+| CodPiadina          | Sandwich Code           |
+| Composizione        | Composition             |
+| Consegna            | Delivery                |
+| Contratto           | Contract                |
+| Cognome             | Last Name               |
+| DataConsegna        | Delivery Date           |
+| DataFine            | End Date                |
+| DataInizio          | Start Date              |
+| DataScadenza        | Expiration Date         |
+| DataTransazione     | Transaction Date        |
+| DettaglioOrdini     | Order Details           |
+| Dipendente          | Employee                |
+| Descrizione         | Description             |
+| Distanza            | Distance                |
+| Email               | Email                   |
+| Eta                 | Age                     |
+| Fattorino           | Rider                   |
+| IDConsegna          | Delivery ID             |
+| IDOrdine            | Order ID                |
+| IDPagamento         | Payment ID              |
+| Incarico            | Assignment              |
+| Ingrediente         | Ingredient              |
+| Inventario          | Inventory               |
+| Locale              | Store                   |
+| MetodoConsegna      | Delivery Method         |
+| MetodoPagamento     | Payment Method          |
+| Nome                | First Name              |
+| NumCartaId          | ID Card Number          |
+| NumCivico           | Street Number           |
+| NumPassaporto       | Passport Number         |
+| NumPiano            | Floor Number            |
+| NumTelefono         | Phone Number            |
+| Ordine              | Order                   |
+| OraConsegna         | Delivery Time           |
+| OraTransazione      | Transaction Time        |
+| Pagamento           | Payment                 |
+| Partenza            | Departure               |
+| PartitaIVA          | VAT Number              |
+| PesoDisponibile     | Available Weight        |
+| Piadina             | Sandwich                |
+| Prezzo              | Price                   |
+| PrezzoUnitario      | Unit Price              |
+| Provincia           | Province                |
+| Regione             | Region                  |
+| Settore             | Department / Sector     |
+| SiglaProvincia      | Province Code           |
+| Stipendio           | Salary                  |
+| Strada              | Street                  |
+| Tipo                | Type                    |
+| TitoloProfessionale | Professional Title      |
+| Transazione         | Transaction             |
+| Trasporto           | Transport               |
 
 </details>
+
+### 2.2 Translation to the Relational Model
+
+#### 2.2.1 Logical Schema
+- **Employee** (EmployeeCode, Name, Surname, TaxCode, PhoneNumber, IDCardNumber*, PassportNumber*, ProfessionalTitle, ContractType, StartDate, EndDate*, Salary, Sector, Store)
+- **PastContract** (EmployeeCode, StoreCode, StartDate, EndDate, Salary, Sector)
+- **Store** (ProvinceCode, Region, Province, Street, PostalCode, StreetNumber)
+- **Inventory** (StoreCode, IngredientCode, AvailableWeight, UnitPrice, ExpirationDate)
+- **Ingredient** (IngredientCode, Category, Name)
+- **Composition** (IngredientCode, SandwichCode)
+- **Sandwich** (SandwichCode, Name, Price, Description)
+- **OrderDetails** (OrderID, SandwichCode, NumberOfSandwiches, TotalSandwichPrice)
+- **Order** (OrderID, TotalOrderPrice)
+- **Payment** (PaymentID, PaymentMethod, TransactionTime, TransactionDate, CustomerCode, OrderID)
+- **Customer** (CustomerCode, Name, Surname, TaxCode, Age, Email, PhoneNumber, Region, Province, Street, PostalCode, StreetNumber, FloorNumber*)
+- **Rider** (RiderCode, Name, Surname, TaxCode, PhoneNumber, IDCardNumber*, PassportNumber*, VATNumber)
+- **Delivery** (DeliveryID, DeliveryMethod, Distance, DeliveryDate, DeliveryTime, OrderID, CustomerCode, RiderCode, StoreCode)
+
+Note: * refers to Optional attrbutes
+
+#### 2.2.2 Referential Integrity Costraints
+
+- Employee.StoreCode         → Store.ProvinceCode
+- PastContract.EmployeeCode  → Employee.EmployeeCode
+- PastContract.StoreCode     → Store.ProvinceCode
+- Inventory.StoreCode        → Store.ProvinceCode
+- Inventory.IngredientCode   → Ingredient.IngredientCode
+- Composition.IngredientCode → Ingredient.IngredientCode
+- Composition.SandwichCode   → Sandwich.SandwichCode
+- OrderDetails.OrderID       → Order.OrderID
+- OrderDetails.SandwichCode  → Sandwich.SandwichCode
+- Payment.CustomerCode       → Customer.CustomerCode
+- Payment.OrderID            → Order.OrderID
+- Delivery.OrderID           → Order.OrderID
+- Delivery.CustomerCode      → Customer.CustomerCode
+- Delivery.RiderCode         → Rider.RiderCode
+- Delivery.StoreCode         → Store.ProvinceCode
+
+## 3 MYSQL IMPLEMENTATION
+For the MySQL implementations, I've followed the logical schema and the referential integrity costraints, which have allowed me to define all the tables of my physical schema (`CreateTables.sql` and `Triggers`.sql).
+
+> Within `Triggers.sql`, a trigger has been included to calculate *TotalOrderPrice*. According to the logical schema, this attribute belongs to the `Order` table; however, in the physical design, its value is initialized to 0 and calculated only after a `Delivery` instance referencing that order is created.
+
+Tables have been populated with realistic random values (`PopulateTables.sql`) using both `INSERT INTO` and `LOAD DATA (from `PopulateStore.csv` and `PopulatePastContract`.txt).
+
+Finally, the nine operations defined during the requirements gathering phase have been implemented as procedures (first seven) and functions (last two).
+
+### 3.1 Procedures
+
+### 3.1.1 RemoveExpiredIngredients
+- Deletes expired ingredients from the Inventory table (rows where ExpirationDate < CURDATE())
+- No input parameters, returns nothing
+- No error handling required
+
+### 3.1.2 ListStoresWithLimitedIngredient
+- Returns a list of stores where a specific ingredient is below a threshold.
+- Input parameters:
+  - WeightLimit: maximum allowed weight.
+  - IngredientName: ingredient to check.
+- Returns the store list (ProvinceCode) and the corresponding AvailableWeight.
+- Error handling:
+  - WeightLimit < 0
+  - IngredientName not found in Ingredient table.
+
+### 3.1.3 ChainMenu
+- Generates a list of sandwiches available in the chain, with ingredients and price.
+- No input parameters, returns a joined list from Composition, Sandwich, and Ingredient.
+- No error handling required.
+
+### 3.1.4 PrintOrderReceipt
+- Generates a receipt for a specific order, including customer name, total price, and payment details.
+- Input: OrderID.
+- Returns one row from a join of Order, Payment, and Customer.
+- Error handling:
+  - OrderID does not match ^O_[0-9]+$
+  - OrderID not found
+  - OrderID exists but the order has not been delivered yet (so TotalOrderPrice = 0)
+
+### 3.1.5 DailyDeliveryReport
+- Generates a daily delivery report with total deliveries and total earnings.
+- Input: Date.
+- Returns one row with COUNT(DeliveryID) AS TotalDeliveries and SUM(TotalOrderPrice) AS TotalEarnings.
+- Error checks:
+  - Date > CURDATE()
+  - Date with no deliveries
+
+### 3.1.6 CreateCustomerOrderHistory
+- Dynamically creates/updates a view CustomerOrderHistory with all orders of a specific customer, sorted from latest to earliest delivery.
+- Input: CustomerCode.
+- Creates a view via a dynamic query (@sql).
+- Error handling:
+  - CustomerCode does not match ^CL_[0-9]+$
+  - CustomerCode not found
+
+### 3.1.7 FindBest
+- Returns statistics of top performers in several categories (riders, stores, customers, most ordered sandwiches).
+- No input parameters.
+- Returns four lists with top three entries per category.
+- No error handling required.
+
+## 3.2 Functions
+
+### 3.2.1 MonthlySalesTotal
+- Calculates total sales for a given month and year.
+- Input: Month, Year.
+- Output: formatted string indicating total sales.
+- Error: Month < 1 OR Month > 12.
+
+### 3.2.2 CountPiadinePerOrder
+- Returns the number of sandwiches in a specified order.
+- Input: OrderID.
+- Output: formatted string indicating total sandwiches.
+- Error handling:
+  - OrderID does not match ^O_[0-9]+$
+  - OrderID not found
+
+
+
 

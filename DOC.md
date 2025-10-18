@@ -652,6 +652,45 @@ Calculating TotalOrderPrice requires accessing several constructs: first Order, 
 ### Choice
 The choice between mantaining or removing `TotalOrderPrice` is not trivial and is *deferred to the physical design phase*; however, for the logical design, the attribute is **mantained**.
 
-#### 2.1.2 Redundancy Analysis
+#### 2.1.2 Removing Generalizations
+There are two generalizations in the E-R schema:
+- `Person` into `Worker` and `Customer`
+- `Worker` into `Employee` and `Rider`
+Both are total, and the parent entities are not directly connected to other entities. Therefore, it is possible to merge them into theri child entities, adding the parent attributes to the children. In this way, we get three separate entities - `Customer`, `Employee` and `Rider` - which participate in different associations.
 
+#### 2.1.3 Removing Multivalued Attributes
+Instead of storing `Customer`'s and `Store`'s multivalued attribute `Address`, I decide to inlcude the associated attributes directly in their respective entities.
+
+#### 2.1.4 Selection of Primary Identifiers
+After removing generalizations and creating three separate entities, I assign internal identifiers of the *EntityCode* to these entities, while mantaining *TaxCode* as an attribute.
+Additionally, instead of using the external identifier for `Delivery` - which includes `Order`, `Customer`, `Rider`, and `Store` - I introduce an internal identifier called `DeliveryID`.
+
+#### 2.1.5 Restructered Schema
+
+![UML Diagram](uml/initial-overview.png)
+
+<details>
+<summary>🇬🇧 English Legend</summary>
+
+| Italian Term   | English Translation  |
+|----------------|-------------------|
+| Cliente        | Customer          |
+| Composizione   | Composition       |
+| Consegna       | Delivery          |
+| Contenuto      | Content           |
+| Dipendente     | Employee          |
+| Esecuzione     | Execution         |
+| Fattorino      | Rider             |
+| Impiego        | Contract          |
+| Ingrediente    | Ingredient        |
+| Inventario     | Inventory         |
+| Lavoratore     | Worker            |
+| Locale         | Shop              |
+| Ordine         | Order             |
+| Pagamento      | Payment           |
+| Piadina        | Sandwhich         |
+| Persona        | Person            |
+| Richiesta      | Request           |
+
+</details>
 

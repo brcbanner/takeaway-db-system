@@ -1,16 +1,8 @@
-##########################################################################
-######################### DATABASE CREATION ##############################
-##########################################################################
-
 DROP DATABASE IF EXISTS SandwichDB;
 CREATE DATABASE SandwichDB;
 USE SandwichDB;
 
-##########################################################################
-######################### TABLE CREATION #################################
-##########################################################################
-
-############################### TABLE Store ###############################
+--
 DROP TABLE IF EXISTS Store;
 
 CREATE TABLE Store (
@@ -22,7 +14,7 @@ CREATE TABLE Store (
     StreetNumber VARCHAR(10)
 ) ENGINE = INNODB;
 
-############################### TABLE Employee ###############################
+--
 DROP TABLE IF EXISTS Employee;
 
 CREATE TABLE IF NOT EXISTS Employee (
@@ -49,7 +41,7 @@ CREATE TABLE IF NOT EXISTS Employee (
         ON UPDATE CASCADE 
 ) ENGINE = INNODB;
 
-############################### TABLE PastContract ###############################
+--
 DROP TABLE IF EXISTS PastContract;
 
 CREATE TABLE PastContract (
@@ -69,7 +61,7 @@ CREATE TABLE PastContract (
         ON UPDATE CASCADE
 ) ENGINE = INNODB;
 
-############################### TABLE Ingredient ###############################
+--
 DROP TABLE IF EXISTS Ingredient;
 
 CREATE TABLE Ingredient (
@@ -79,7 +71,7 @@ CREATE TABLE Ingredient (
     Name VARCHAR(20) UNIQUE NOT NULL
 ) ENGINE = INNODB;
 
-############################### TABLE Inventory ###############################
+--
 DROP TABLE IF EXISTS Inventory;
 
 CREATE TABLE Inventory (
@@ -101,7 +93,7 @@ CREATE TABLE Inventory (
         ON UPDATE CASCADE
 ) ENGINE = INNODB;
 
-############################### TABLE Sandwich ###############################
+--
 DROP TABLE IF EXISTS Sandwich;
 
 CREATE TABLE Sandwich (
@@ -113,7 +105,7 @@ CREATE TABLE Sandwich (
     Description VARCHAR(50) NOT NULL
 ) ENGINE = INNODB;
 
-############################### TABLE Composition ###############################
+--
 DROP TABLE IF EXISTS Composition;
 
 CREATE TABLE Composition (
@@ -130,7 +122,7 @@ CREATE TABLE Composition (
         ON UPDATE CASCADE
 ) ENGINE = INNODB;
 
-############################### TABLE Order ###############################
+--
 DROP TABLE IF EXISTS Order;
 
 CREATE TABLE Order (
@@ -139,7 +131,7 @@ CREATE TABLE Order (
     TotalOrderPrice DECIMAL(5, 2) DEFAULT 0
 ) ENGINE = INNODB;
 
-############################### TABLE OrderDetails ###############################
+--
 DROP TABLE IF EXISTS OrderDetails;
 
 CREATE TABLE OrderDetails (
@@ -154,7 +146,7 @@ CREATE TABLE OrderDetails (
         ON UPDATE CASCADE
 ) ENGINE = INNODB;
 
-############################### TABLE Customer ###############################
+--
 DROP TABLE IF EXISTS Customer;
 
 CREATE TABLE Customer (
@@ -174,7 +166,7 @@ CREATE TABLE Customer (
     FloorNumber TINYINT UNSIGNED NULL
 ) ENGINE = INNODB;
 
-############################### TABLE Payment ###############################
+--
 DROP TABLE IF EXISTS Payment;
 
 CREATE TABLE Payment (
@@ -194,7 +186,7 @@ CREATE TABLE Payment (
     CONSTRAINT UniquePaymentPerOrder UNIQUE (OrderID)
 ) ENGINE = INNODB;
 
-############################### TABLE Rider ###############################
+--
 DROP TABLE IF EXISTS Rider;
 
 CREATE TABLE Rider (
@@ -211,7 +203,7 @@ CREATE TABLE Rider (
     VATNumber CHAR(11) UNIQUE NOT NULL
 ) ENGINE = INNODB;
 
-############################### TABLE Delivery ###############################
+--
 DROP TABLE IF EXISTS Delivery;
 
 CREATE TABLE Delivery (

@@ -187,7 +187,7 @@ We first identify the most relevant concepts, which, in our context, are: Custom
 `Objects` are transformed into **entities**, and the *relationships* among them are represented as **relations** (each term is expressed as its singular noun form).
 
 <p align="center">
-  <img src="uml/initial-overview.png" width="80%">
+  <img src="er-diagrams/initial-overview.png" width="80%">
 </p>
 
 <details>
@@ -222,7 +222,7 @@ This is the parent entity of both Worker and Customer; thus, the generalization 
 In turn, Worker is divided into Employee and Rider; this second generalization is total and exclusive.
 
 <p align="center">
-  <img src="uml/person-generalization.png" width="60%">
+  <img src="er-diagrams/person-generalization.png" width="60%">
 </p>
 
 <details>
@@ -260,7 +260,7 @@ To record previous employment, we use a second many-to-many relationship called 
 These two relationships share almost the same attributes, but the first one includes an attribute Type, defining whether the contract is fixed-term or permanent. Based on this, there may or may not be an EndDate.
 
 <p align="center">
-  <img src="uml/employee-store.png" width="60%">
+  <img src="er-diagrams/employee-store.png" width="60%">
 </p>
 
 <details>
@@ -284,7 +284,7 @@ These two relationships share almost the same attributes, but the first one incl
 Each Rider can deliver more than one order, but not vice versa; thus, there is a one-to-many relationship called Delivery between Order and Rider.
 
 <p align="center">
-  <img src="uml/rider-order.png" width="60%">
+  <img src="er-diagrams/rider-order.png" width="60%">
 </p>
 
 <details>
@@ -308,7 +308,7 @@ Each Rider can deliver more than one order, but not vice versa; thus, there is a
 Each Customer can place multiple orders and, consequently, perform multiple payments; however, each order is requested and paid for by one and only one customer.
 
 <p align="center">
-  <img src="uml/customer-payment-order-before.png" width="60%">
+  <img src="er-diagrams/customer-payment-order-before.png" width="60%">
 </p>
 
 <details>
@@ -340,7 +340,7 @@ This resolves the ambiguity and ensures a unified and centralized interaction.
 As a result, the order request and the payment execution occur simultaneously.
 
 <p align="center">
-  <img src="uml/customer-payment-order-after.png" width="60%">
+  <img src="er-diagrams/customer-payment-order-after.png" width="60%">
 </p>
 
 <details>
@@ -370,7 +370,7 @@ The Store entity is uniquely identified by the province code (e.g., FI for Flore
 The Inventory relationship between Store and Ingredient records the UnitPrice, which is not stored in Ingredient because it can vary depending on the geographic location of the store.
 
 <p align="center">
-  <img src="uml/store-overview.png" width="70%">
+  <img src="er-diagrams/store-overview.png" width="70%">
 </p>
 
 <details>
@@ -413,7 +413,7 @@ Since it is essential to track the details of the ordered piadinas — i.e., the
 Distance can also be derived from the difference between the customer’s and store’s addresses; therefore, it makes sense to associate the Delivery also with Customer.
 
 <p align="center">
-  <img src="uml/order-overview.png" width="65%">
+  <img src="er-diagrams/order-overview.png" width="65%">
 </p>
 
 <details>
@@ -447,7 +447,7 @@ Distance can also be derived from the difference between the customer’s and st
 At this point, we notice that Delivery has become an association involving four entities and contains several attributes; therefore, it is more convenient to treat it as an entity itself, identified externally by the combination of Customer, Rider, Order, and Store.
 
 <p align="center">
-  <img src="uml/delivery-overview.png" width="60%">
+  <img src="er-diagrams/delivery-overview.png" width="60%">
 </p>
 
 <details>
@@ -473,7 +473,7 @@ At this point, we notice that Delivery has become an association involving four 
 The final schema is obtained by integrating all partial schemas produced so far.
 
 <p align="center">
-  <img src="uml/final-overview.png" width="80%">
+  <img src="er-diagrams/final-overview.png" width="80%">
 </p>
 
 <details>
@@ -691,7 +691,7 @@ Additionally, instead of using the external identifier for `Delivery` - which in
 #### 2.1.5 Restructered Schema
 
 <p align="center">
-  <img src="uml/final.png" width="80%">
+  <img src="er-diagrams/final.png" width="80%">
 </p>
 
 <details>

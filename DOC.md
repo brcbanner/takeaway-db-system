@@ -41,47 +41,45 @@
 ## 1. CONCEPTUAL DESIGN
 
 ### 1.1 Sample Owner Request
-A chain of takeaway sandwich _shops_, which has _locations_ in the main cities of Italy, needs a well-organized database to handle information about customers, orders, workers, inventory, and _shops_.
+A chain of takeaway sandwich _shops_, with _locations_ in the main cities of Italy, requires a well-organized database to manage information about customers, orders, workers, inventory, sandwiches and _branches_.
 
-For each customer, their personal information is recorded, including first name, last name, age, email, tax code, phone number, _address_, and possibly the _floor_.
+For each `customer`, personal information is recorded, including **first name**, **last name**, **age**, **email**, **tax code**, **phone number**, **_address_**, and, if applicable, the **_floor_**.
 
-The staff at each _point of sale_ is divided into different categories (such as cleaning staff, sandwich makers, and packaging staff). For each worker, the first name, last name, phone number, and _details of documents needed for hiring_ are saved. Other useful information for staff is also stored, including professional title, type of contract (fixed-term or permanent), _salary_, work area, _contract period_ (for fixed-term contracts), and past employment.
+The staff at each _point of sale_ is divided into different categories (such as cleaning staff, sandwich makers, and packaging staff). For each `employee`, the **first name**, **last name**, **phone number**, and **_details of documents required for hiring_** are recorded. Additional useful information is also stored, including **job title**, **type of contract** (fixed-term or permanent), **_salary_**, **department**, **_contract period_** (for fixed-term contracts), and **previous employment**.
 
-For _people who work independently_, it’s a bit different: they have a VAT number and are not tied to a specific _store_.
+For _those who work independently_, the situation is different: they have a **VAT number** and are not associated with a specific _store_.
 
-Any worker, whether employed or independent, can also be a customer.
+Each worker, whether employed or self-employed, can also be a customer.
 
-The chain has only one _store_ per city. Each _point of sale_ is recorded via an _address_; it has its own staff and an inventory composed of the ingredients needed to make sandwiches. Every ingredient is tracked with a unique code, name, category (e.g., meat, fish, vegetables), _unit price_, expiration date, and _available amount_.
+The chain has only one _shop_ per city. Each `store` is registered through its **_address_** and has its own staff, and an `inventory` consisting of the ingredients required to prepare sandwiches. Each `ingredient` is recorded with a **unique code**, **name**, **category** (e.g., meat, fish, vegetables), **_unit price_**, **expiration date**, and **_available quantity_**.
 
-Sandwiches themselves have a unique code, a name, a description, and a _price_.  
-Each order, requested by a customer, is delivered by a rider from a specific _store_.  
-Orders are tracked with a unique code and the _total order price_.  
-Delivery has a _price_ that varies depending on the delivery type (for “standard” the price doesn’t change, while for “express” it’s €3 more) and on the _distance_ (every kilometer increases the price by €0.20).  
-Each order is linked to a payment transaction with a payment code and method. For each stage of the order (request, delivery, and payment), date and time are recorded.
+Each `sandwich` has a **unique code**, a **name**, a **description**, and a **_price_**. Each `order`, placed by a customer, is delivered by a `rider` from a specific _store_. Orders are recorded with a **unique code** and **_total order price_**. The delivery _price_ varies depending on the delivery type (for “standard” the price doesn’t change, while for “express” it increases by €3) and on the _distance_ (each kilometer adds €0.20).  
+
+Each order is linked to a `payment` transaction, recorded with a **payment code** and **method**. For each stage of the order (request, delivery, and payment), the **date** and **time** are recorded.
 
 ---
 
 ### 1.2 Requirements Analysis
-This text presents a number of ambiguities and imprecisions. At this stage, it is important to:
+This text presents a number of ambiguities and inaccuracies. At this stage, it is important to:
 
-- **Avoid overly generic terms**, which make a concept unclear, and replace them with more meaningful ones or define them clearly:
+🔹 **Avoid overly generic terms**, which make a concept unclear, and replace them with more meaningful ones or define them clearly:
   - `Address` → address including region, province, street (street or square), postal code, and street number  
   - `Floor` → floor number  
   - `Details of documents required for hiring` → tax code and ID card number, or alternatively passport number  
   - `Contract period` → employment start and end dates  
-  - `Available amount` → available weight  
+  - `Available quantity` → available weight  
   - `Distance` → distance between the delivery address (customer residence) and the store from which the order is sent  
 
-- **Simplify convoluted sentences** that make the text difficult to understand:
-  - `People who work independently` → freelance workers
+🔹 **Simplify convoluted sentences** that make the text difficult to understand:
+  - `Those who work independently` → freelance workers
 
-- **Identify synonyms and homonyms** to clarify ambiguities:
-  - `Location`, `shop`, and `point of sale` → store
+🔹 **Identify synonyms and homonyms** to clarify ambiguities:
+  - `Location`, `shop`, `point of sale` and `branch` → store
 
-- **Make references between terms explicit:**
+🔹 **Make references between terms explicit:**
   - `Freelance workers` → riders
 
-- **Indicate the unit of measurement** for all quantities:
+🔹 **Indicate the unit of measurement** for all quantities:
   - `Unit price` → euro per kg 
   - `Available weight` → kilograms  
   - `Distance` → kilometers  
@@ -91,7 +89,7 @@ To clarify and understand the terms used, a glossary of terms is presented below
 
 ---
 
-#### 📖 Glossary of Terms
+### 📖 Glossary of Terms
 
 > **Purpose:** Clarify the key terms used throughout the conceptual and logical design.
 
@@ -113,78 +111,75 @@ To clarify and understand the terms used, a glossary of terms is presented below
 ### 1.3 Requirements Gathering
 
 #### 1.3.1 On Data
-Following the request and the glossary, we proceed with the requirements gathering — that is, the identification of the characteristics that our database must possess.  
+Following the request and the glossary, we proceed with requirements gathering — that is, identifying the characteristics that our database must possess.  
 After reformulating certain terms and removing ambiguities, the text is broken down into groups of related sentences.
 
 ---
 
 #### 🧑‍💼 Sentences Related to Workers
-Each `Worker` is recorded with personal information such as first name, last name, phone number, tax code, and ID card number (or passport number).  
-For the `Staff`, additional useful details are stored, such as professional title, type of contract (fixed-term or permanent), salary, work area, employment start and end dates (for fixed-term contracts only), and previous work experience.  
-`Riders`, on the other hand, are self-employed workers with a VAT number and are not associated with a specific `Store`.  
+Each `Worker` is recorded with personal information such as **first name**, **last name**, **phone number**, **tax code**, and **ID card number** (or passport number).  
+For `Staff`, additional information is stored, including **professional title**, **type of contract** (fixed-term or permanent), **salary**, **department**, **employment start and end dates** (for fixed-term contracts), and **previous work experience**.
+`Riders` are self-employed workers with a VAT number and are not associated with a specific `Store`.  
 Each worker, whether an employee or a rider, can also be a `Customer`.
 
 ---
 
 #### 🏪 Sentences Related to Stores
-The chain operates one `Store` in each city.  
-Each store is recorded with its `Address`, which includes region, province, postal code, street, and street number.  
-Every store has its own `Staff` and `Inventory`, managed independently from other locations.
+The chain operates **one** `Store` **per city**.  
+Each store is recorded with its **address**, which includes region, province, postal code, street, and street number.  
+Every store mantains its own `Staff` and `Inventory`, independent of other locations.
 
 ---
 
 #### 🧂 Sentences Related to Ingredients
 The `Inventory` includes all `Ingredients` used to prepare sandwiches.  
-Each ingredient is identified by a unique code, name, category (e.g., meat, fish, vegetables), unit price (in euros per kg), expiration date, and available weight (in kg).
+Each ingredient is identified with a **unique code**, **name**, **category** (e.g., meat, fish, vegetables), **unit price** (in euros per kg), **expiration date**, and **available weight** (in kg).
 
 ---
 
 #### 🥪 Sentences Related to Sandwiches
-Each `Sandwich` is defined by a unique code, a name, a description, and a price.
+Each `Sandwich` is defined by a **unique code**, **name**, **description**, and **price**.
 
 ---
 
 #### 🧾 Sentences Related to Orders
 Each `Order`, placed by a `Customer`, is delivered by a `Rider` from a specific `Store`.  
-Orders are recorded with a unique code and the total order price.  
-The delivery fee varies depending on the delivery type and the distance between the customer and the store.  
-Each phase of the order — request, delivery, and payment — is recorded with date and time.
+Orders are recorded with a **unique code** and the **total order price**.  
+The delivery fee depends on **delivery type** and **distance** between the customer and the store.  
+Each stage of the order — request, delivery, and payment — is recorded with **date** and **time**.
 
 ---
 
 #### 💳 Sentences Related to Transactions
-Each `Transaction` is recorded with a payment code and payment method and is associated with a specific `Order`.
+Each `Transaction` is recorded with a **payment code** and **payment method**, and is associated with a specific `Order`.
 
 ---
 
 #### 1.3.1 On Operations
-Alongside the data specifications, the specifications of the operations to be performed on the data and their average frequencies are collected.
+Alongside the data specifications, the operations to be performed on the data and their average frequencies are collected.
 
 | **Operation** | **Description** | **Average Frequency** |
 |----------------|------------------|------------------------|
-| **Operation 1** | Remove expired ingredients from the inventory | Once a day |
-| **Operation 2** | Check the available weight of an ingredient against a certain limit | Several times a day |
-| **Operation 3** | Print the chain’s menu, i.e., a list of available sandwiches | Several times a day |
-| **Operation 4** | Print the receipt of an order | 20 times a day |
-| **Operation 5** | Print a daily delivery report | Once a day |
-| **Operation 6** | Create a historical record of orders for a specific customer | 10 times a day |
-| **Operation 7** | Select the 3 best among riders, shops, customers, and orders | Once a month |
-| **Operation 8** | Calculate the total sales made in a specific month and year | 5 times a month |
-| **Operation 9** | Calculate the number of sandwiches in an order | 20 times a day |
+| **1** | Remove expired ingredients from inventory | Once a day |
+| **2** | Check available weight of an ingredient against a limit | Several times a day |
+| **3** | Print the chain’s menu (list of available sandwiches) | Several times a day |
+| **4** | Print the receipt of an order | 20 times a day |
+| **5** | Print a daily delivery report | Once a day |
+| **6** | Create a historical record of orders for a specific customer | 10 times a day |
+| **7** | Select the 3 best among riders, stores, customers, and orders | Once a month |
+| **8** | Calculate total sales for a specific month and year | 5 times a month |
+| **9** | Calculate the number of sandwiches in an order | 20 times a day |
 
 ### 1.4 Conceptual Data Representation
-Following the analysis and gathering of requirements, we proceed to the conceptual representation of data, which ultimately leads to the creation of the conceptual schema.
-We first identify the most relevant concepts, which, in our context, are: Customers, Employees, Riders, Stores, Ingredients, Sandwich, Orders, and Payments. They define a **skeleton system**.
+Following the analysis and gathering of requirements, we proceed to the **conceptual representation of data**, which leads to the creation of the **conceptual schema**.
+We first identify the most relevant concepts in our context: **Customer**, **Employee**, **Riders**, **Store**, **Ingredient**, **Sandwich**, **Order**, and **Payment**. These form the **skeleton of the system**.
 
-- An `order` is a combination of several activities: the `customer`’s *request* for a certain number of `sandwiches`, *delivery* from a `shop` through a `rider`, and the successful *execution* of the `payment` by the customer.
+- An `Order` consists of several activities: the `Customer`’s _request_ for a certain number of `Sandwiches`, _delivery_ from a `Store` through a `Rider`, and the successful _execution_ of the `Payment`.
+- Both Rider and Employee are `Workers`; however, an `Employee`, unlike a Rider, has a _contract_ with a specific Store.
+- Similarly, a Customer and a Worker can be considered a single `Person`.
+- Each Store has its own _inventory_, composed of available `Ingredients` which are *combined* to create Sandwiches — the main _content_ of each Order.
 
-- Both rider and employee are `workers`; however, an `employee`, unlike a rider, has a *contract* with a specific store.
-
-- Similarly, a customer and a worker can be considered as a single `person`.
-
-- Each store owns its own *inventory*, composed of available `ingredients` which are *composed* to create the sandwiches — the main *content* of each order.
-
-`Objects` are transformed into **entities**, and the *relationships* among them are represented as **relations** (each term is expressed as its singular noun form).
+`Objects` are transformed into **entities**, and the _relationships_ among them are represented as **relations** (each term expressed in singular form).
 
 <p align="center">
   <img src="er-diagrams/initial-overview.png" width="80%">
@@ -206,7 +201,7 @@ We first identify the most relevant concepts, which, in our context, are: Custom
 | Ingrediente    | Ingredient        |
 | Inventario     | Inventory         |
 | Lavoratore     | Worker            |
-| Locale         | Shop              |
+| Locale         | Store             |
 | Ordine         | Order             |
 | Pagamento      | Payment           |
 | Piadina        | Sandwhich         |
@@ -215,11 +210,11 @@ We first identify the most relevant concepts, which, in our context, are: Custom
 
 </details>
 
-We now analyze all the entities and the relationships among them, indicating their attributes.
+We now analyze all entities and their relationships, indicating their attributes.
 
-We begin with the Person entity.
-This is the parent entity of both Worker and Customer; thus, the generalization is total and overlapping.
-In turn, Worker is divided into Employee and Rider; this second generalization is total and exclusive.
+#### PERSON Entity
+The `Person` entity is the parent of both `Worker` and `Customer`; this generalization is **total and overlapping**.
+`Worker` is further divided into `Employee` and `Rider`; this generalization is **total and exclusive**.
 
 <p align="center">
   <img src="er-diagrams/person-generalization.png" width="60%">
@@ -255,9 +250,10 @@ In turn, Worker is divided into Employee and Rider; this second generalization i
 
 </details>
 
-Each Employee has only one contract with a Store; therefore, the Employee entity is connected through a one-to-many relationship called Contract with the Store entity.
-To record previous employment, we use a second many-to-many relationship called PastContract.
-These two relationships share almost the same attributes, but the first one includes an attribute Type, defining whether the contract is fixed-term or permanent. Based on this, there may or may not be an EndDate.
+#### Relationship between EMPLOYEE & STORE
+Each `Employee` has only one `Contract` with a `Store`, represented as a **one-to-many relationship**.
+To record previous employment, we use a **many-to-many relationship** called `PastContract`.
+The two relationships share most attributes, but the first includes a **Type** attribute (fixed-term or permanent), which determines whether an **EndDate** is required.
 
 <p align="center">
   <img src="er-diagrams/employee-store.png" width="60%">
@@ -281,7 +277,8 @@ These two relationships share almost the same attributes, but the first one incl
 
 </details>
 
-Each Rider can deliver more than one order, but not vice versa; thus, there is a one-to-many relationship called Delivery between Order and Rider.
+#### Relationship between RIDER & ORDER
+Each `Rider` can deliver multiple orders, but each `Order` is delivered by only one Rider, forming a **one-to-many relationship** called `Delivery` between Order and Rider.
 
 <p align="center">
   <img src="er-diagrams/rider-order.png" width="60%">
@@ -290,8 +287,8 @@ Each Rider can deliver more than one order, but not vice versa; thus, there is a
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term        | English Translation      |
-|--------------------|-------------------------|
+| Italian Term        | English Translation     |
+|---------------------|-------------------------|
 | Consegna            | Delivery                |
 | DataConsegna        | Delivery Date           |
 | Distanza            | Distance                |
@@ -305,7 +302,8 @@ Each Rider can deliver more than one order, but not vice versa; thus, there is a
 
 </details>
 
-Each Customer can place multiple orders and, consequently, perform multiple payments; however, each order is requested and paid for by one and only one customer.
+#### CUSTOMER Entity
+Each `Customer` can place multiple `Orders` and perform multiple `Payments`; however, each order is requested and paid for by one and only one Customer.
 
 <p align="center">
   <img src="er-diagrams/customer-payment-order-before.png" width="60%">
@@ -314,8 +312,8 @@ Each Customer can place multiple orders and, consequently, perform multiple paym
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term        | English Translation      |
-|--------------------|-------------------------|
+| Italian Term        | English Translation     |
+|---------------------|-------------------------|
 | Cliente             | Customer                |
 | DataEsecuzione      | Execution Date          |
 | DataRichiesta       | Request Date            |
@@ -334,10 +332,9 @@ Each Customer can place multiple orders and, consequently, perform multiple paym
 
 </details>
 
-However, the two relationships Execution and Request are not sufficient, because there is no logical connection between Order and Payment: as it stands, a customer could make a payment without an order, or an order could exist without payment.
-Therefore, it is necessary to introduce a ternary relationship Transaction among Customer, Payment, and Order.
-This resolves the ambiguity and ensures a unified and centralized interaction.
-As a result, the order request and the payment execution occur simultaneously.
+#### TRANSACTION Entity
+Since `Execution` and `Request` alone don't ensure a connection between `Order` and `Payment` - because a customer could make a payment without an order, or an order could exist without payment - we introduce a **ternary relationship** `Transaction` among `Customer`, `Payment`, and `Order`.
+This resolves the ambiguity and ensures a unified and centralized interaction: the request and the payment occur simultaneously.
 
 <p align="center">
   <img src="er-diagrams/customer-payment-order-after.png" width="60%">
@@ -346,8 +343,8 @@ As a result, the order request and the payment execution occur simultaneously.
 <details>
 <summary>🇬🇧 English Legend</summary>
 
-| Italian Term        | English Translation      |
-|--------------------|-------------------------|
+| Italian Term        | English Translation     |
+|---------------------|-------------------------|
 | Cliente             | Customer                |
 | DataEsecuzione      | Execution Date          |
 | DataRichiesta       | Request Date            |
@@ -366,8 +363,9 @@ As a result, the order request and the payment execution occur simultaneously.
 
 </details>
 
-The Store entity is uniquely identified by the province code (e.g., FI for Florence), since the chain owns only one store per city.
-The Inventory relationship between Store and Ingredient records the UnitPrice, which is not stored in Ingredient because it can vary depending on the geographic location of the store.
+#### STORE Entity
+Each `Store` is uniquely identified by the **province code** (e.g., FI for Florence), because there is only one store per city.
+The `Inventory` relationship between `Store` and `Ingredient` records the **UnitPrice**, which is _not stored in Ingredient entity_ because it varies by store location.
 
 <p align="center">
   <img src="er-diagrams/store-overview.png" width="70%">
@@ -408,6 +406,7 @@ The Inventory relationship between Store and Ingredient records the UnitPrice, w
 
 </details>
 
+#### ORDER Entity
 The Order entity includes the attribute TotalOrderPrice, which equals the sum of the DeliveryPrice and the total price of all piadinas ordered (calculated as the sum of TotalPiadinaPrice for each piadina type in the order).
 Since it is essential to track the details of the ordered piadinas — i.e., their number and price — we make the relationship between Order and Piadina explicit, naming it OrderDetails and recording NumPiadinas and TotalPiadinaPrice.
 Distance can also be derived from the difference between the customer’s and store’s addresses; therefore, it makes sense to associate the Delivery also with Customer.
@@ -461,7 +460,7 @@ At this point, we notice that Delivery has become an association involving four 
 | Distanza           | Distance                      |
 | Fattorino          | Delivery Person               |
 | Incarico           | Contract                      |
-| Locale             | Location / Store              |
+| Locale             | Store                         |
 | MetodoConsegna     | Delivery Method               |
 | OraConsegna        | Delivery Time                 |
 | Ordine             | Order                         |

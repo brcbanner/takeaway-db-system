@@ -1,20 +1,20 @@
 # 🍽️ Takeaway Database Management System
-> **Project:** takeaway-db-system  
+> **Project:** `takeaway-db-system`  
 > **Purpose:** Design and implementation of a database system for managing a piadina (Italian flatbread sandwich) takeaway chain.  
 > **Language:** SQL / MySQL
 
 ---
 
 ## 📚 Table of Contents
-1. [Conceptual Design](#-conceptual-design)
+1. 📐 [Conceptual Design](#-conceptual-design)
   - 1.1 [Sample Owner Request](#-sample-owner-request)
   - 1.2 [Requirements Analysis](#-requirements-analysis)
   - 1.3 [Requirements Gathering](#-requirements-gathering)
     - 1.3.1 [Data Requirements](#-data-requirements)
-    - 1.3.2[Operation Requirements](#-operation-requirements)
+    - 1.3.2 [Operation Requirements](#-operation-requirements)
   - 1.4 [Conceptual Data Representation](#-conceptual-data-representation)
   - 1.5 [Documentation of the Conceptual Data Schema](#-documentation-of-the-conceptual-data-schema)
-2. [Logical Design](#-logical-design)
+2. 🧩 [Logical Design](#-logical-design)
   - 2.1 [E-R Schema Restructuring](#-e-r-schema-restructuring)
     - 2.1.1 [Redundancy Analysis](#-redundancy-analysis)
     - 2.1.2 [Removal of Generalizations](#-removal-of-generalizations)
@@ -23,7 +23,7 @@
     - 2.1.5 [Restructured Schema](#-restructured-schema)
   - 2.2 [Translation to the Relational Model](#translation-to-the-relational-model)
     - 2.2.1 [Logical Schema](#logical-schema)
-3. [MySQL Implementation](#mysql-implementation)
+3. 💻 [MySQL Implementation](#mysql-implementation)
   - 3.1 [Procedures](#procedures)
     - 3.1.1 [RemoveExpiredIngredients](#removeexpiredingredients)
     - 3.1.2 [ListShopsWithLimitedIngredient](#listshopswithlimitedingredient)
@@ -38,7 +38,7 @@
 
 ---
 
-## 1. CONCEPTUAL DESIGN
+## 1. 📐 CONCEPTUAL DESIGN
 
 ### 1.1 Sample Owner Request
 A chain of takeaway sandwich _shops_, with _locations_ in the main cities of Italy, requires a well-organized database to manage information about customers, orders, workers, inventory, sandwiches and _branches_.
@@ -216,7 +216,7 @@ We now analyze all entities and their relationships, indicating their attributes
 
 ---
 
-#### Person Entity
+#### 👤 Person Entity
 The `Person` entity is the parent of both `Worker` and `Customer`; this generalization is **total and overlapping**.
 `Worker` is further divided into `Employee` and `Rider`; this generalization is **total and exclusive**.
 
@@ -256,7 +256,7 @@ The `Person` entity is the parent of both `Worker` and `Customer`; this generali
 
 ---
 
-#### Relationship between Employee & Store
+#### Relationship between 🧑‍💼 Employee & 🏪 Store
 Each `Employee` has only one `Contract` with a `Store`, represented as a **one-to-many relationship**.
 To record previous employment, we use a **many-to-many relationship** called `PastContract`.
 The two relationships share most attributes, but the first includes a **Type** attribute (fixed-term or permanent), which determines whether an **EndDate** is required.
@@ -285,7 +285,7 @@ The two relationships share most attributes, but the first includes a **Type** a
 
 ---
 
-#### Relationship between Rider & Order
+#### Relationship between 🛵 Rider & 🧾 Order
 Each `Rider` can deliver multiple orders, but each `Order` is delivered by only one Rider, forming a **one-to-many relationship** called `Delivery` between Order and Rider.
 
 <p align="center">
@@ -312,7 +312,7 @@ Each `Rider` can deliver multiple orders, but each `Order` is delivered by only 
 
 ---
 
-#### Customer Entity
+#### 🙋 Customer Entity
 Each `Customer` can place multiple `Orders` and perform multiple `Payments`; however, each order is requested and paid for by one and only one Customer.
 
 <p align="center">
@@ -344,7 +344,7 @@ Each `Customer` can place multiple `Orders` and perform multiple `Payments`; how
 
 ---
 
-#### Transaction Entity
+#### 💰 Transaction Entity
 Since `Execution` and `Request` alone don't ensure a connection between `Order` and `Payment` - because a customer could make a payment without an order, or an order could exist without payment - we introduce a **ternary relationship** `Transaction` among `Customer`, `Payment`, and `Order`.
 This resolves the ambiguity and ensures a unified and centralized interaction: the request and the payment occur simultaneously.
 
@@ -377,7 +377,7 @@ This resolves the ambiguity and ensures a unified and centralized interaction: t
 
 ---
 
-#### Store Entity
+#### 🏪 Store Entity
 Each `Store` is uniquely identified by the **province code** (e.g., FI for Florence), because there is only one store per city.
 The `Inventory` relationship between `Store` and `Ingredient` records the **UnitPrice**, which is _not stored in Ingredient entity_ because it varies by store location.
 
@@ -422,7 +422,7 @@ The `Inventory` relationship between `Store` and `Ingredient` records the **Unit
 
 ---
 
-#### Order Entity
+#### 🧾 Order Entity
 The `Order` entity includes **TotalOrderPrice**, equal to the sum of **DeliveryPrice** and the total price of all `Sandwiches` in the order (**TotalSandwichPrice** for each type).
 To track individual sandwiches, the relationship between `Order` and `Sandwich` is represented explicitly as `OrderDetails`, recording **NumSandwiches** and **TotalSandwichPrice**.
 **Distance** can be derived from the difference between the Customer’s and Store’s addresses; therefore, `Delivery` is associated with the `Customer` as well.
@@ -487,7 +487,7 @@ At this point, `Delivery` becomes an association involving **four entities** wit
 
 ---
 
-#### Final Schema
+#### 🏁 Final Schema
 
 The final conceptual schema is obtained by integrating all partial schemas generated above.
 
@@ -566,7 +566,7 @@ The final conceptual schema is obtained by integrating all partial schemas gener
 
 ### 1.5 Documentation of the Conceptual Data Schema
 
-### UML Entities
+### UML 🧩 Entities
 
 |**Entity**|**Description**|**Attributes**|**Identifiers**|
 |-----------|---------------|---------------|----------------|
@@ -582,7 +582,7 @@ The final conceptual schema is obtained by integrating all partial schemas gener
 |**Payment**|Payment of the order by the customer|PaymentID, PaymentMethod|PaymentID|
 |**Delivery**|Delivery of an order, carried out by a rider from a store to a customer|DeliveryMethod, DeliveryPrice, DeliveryDate, DeliveryTime, Distance|Rider, Customer, Order, Store|
 
-### UML Constraint Rules
+### UML ⚖️ Constraint Rules
 
 |**ID**|**Rule Description**|
 |------|--------------------|
@@ -593,7 +593,7 @@ The final conceptual schema is obtained by integrating all partial schemas gener
 |**CR5**|Each worker must possess either an IDCardNumber or a PassportNumber.|
 |**CR6**|Each customer can place orders only from the store in their province.|
 
-### UML Relationships
+### UML 🔗 Relationships
 
 |**Relationship**|**Description**|**Related Entities**|**Attributes**|
 |----------------|----------------|--------------------|---------------|
@@ -610,7 +610,7 @@ The final conceptual schema is obtained by integrating all partial schemas gener
 
 ---
 
-## 2. LOGICAL DESIGN
+## 2. 🧩 LOGICAL DESIGN
 
 ### 2.1 E-R Schema Restructuring
 
@@ -741,7 +741,7 @@ Additionally, instead of using the external identifier for `Delivery` (which inc
 
 ---
 
-#### 2.1.5 Restructered Schema
+#### 2.1.5 ✅ Restructered Schema
 
 <p align="center">
   <img src="er-diagrams/final.png" width="80%">
@@ -840,7 +840,6 @@ Additionally, instead of using the external identifier for `Delivery` (which inc
 ---
 
 #### 2.2.2 Referential Integrity Costraints
-
 - Employee.StoreCode         → Store.ProvinceCode
 - PastContract.EmployeeCode  → Employee.EmployeeCode
 - PastContract.StoreCode     → Store.ProvinceCode
@@ -859,7 +858,7 @@ Additionally, instead of using the external identifier for `Delivery` (which inc
 
 ---
 
-## 3. MYSQL IMPLEMENTATION
+## 3. 💻 MYSQL IMPLEMENTATION
 
 For the MySQL implementation, the logical schema and the referential integrity constraints were followed, allowing the definition of all tables in the physical schema (`CreateTables.sql` and `Triggers.sql`).
 
@@ -871,7 +870,7 @@ Finally, the nine operations defined during the *Requirements Gathering* phase w
 
 ---
 
-### 3.1 Procedures
+### 3.1 ⚙️ Procedures
 
 #### 3.1.1 RemoveExpiredIngredients
 - Deletes expired ingredients from the `Inventory` table (rows where `ExpirationDate < CURDATE()`).
@@ -939,7 +938,7 @@ Finally, the nine operations defined during the *Requirements Gathering* phase w
 
 ---
 
-### 3.2 Functions
+### 3.2 🧮 Functions
 
 #### 3.2.1 MonthlySalesTotal
 - Calculates the total sales for the chain for a specified month and year.  

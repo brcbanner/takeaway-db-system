@@ -51,28 +51,40 @@ The system manages all aspects of operations:
 - `Delivery` — Rider ↔ Order ↔ Customer ↔ Store  
 
 ---
-
 ## 🏗️ Project Structure
 
 ```plaintext
 takeaway-db-system/
 │
-├── 📄 DOC.md                # Full documentation (conceptual + logical design)
-├── 📄 README.md             # Project overview (this file)
-├── 📄 LICENSE.md
+├── [DOC.md](DOC.md)                # Full documentation (conceptual, logical, and physical design)
+├── [LICENSE](LICENSE)              # License information
+├── [README.md](README.md)          # Project overview (this file)
 │
-├── 📁 sql/
-│   ├── CreateTables.sql     # Physical schema definition
-│   ├── PopulateTables.sql   # Sample data insertion
-│   ├── Triggers.sql         # Triggers (e.g., for TotalOrderPrice)
-│   ├── Procedures.sql       # Stored procedures (operations 1–7)
-│   ├── Functions.sql        # Stored functions (operations 8–9)
-│   ├── PopulateStore.csv    # CSV dataset for stores
-│   ├── PopulatePastContract.txt # Dataset for past contracts
+├── 📁 er-diagrams/                 # ER and relational diagrams
+│   ├── [customer-payment-order-before.png](er-diagrams/customer-payment-order-before.png)
+│   ├── [customer-payment-order-after.png](er-diagrams/customer-payment-order-after.png)
+│   ├── [delivery-overview.png](er-diagrams/delivery-overview.png)
+│   ├── [employee-store.png](er-diagrams/employee-store.png)
+│   ├── [final-overview.png](er-diagrams/final-overview.png)
+│   ├── [final.png](er-diagrams/final.png)
+│   ├── [initial-overview.png](er-diagrams/initial-overview.png)
+│   ├── [order-overview.png](er-diagrams/order-overview.png)
+│   ├── [person-generalization.png](er-diagrams/person-generalization.png)
+│   ├── [rider-order.png](er-diagrams/rider-order.png)
+│   └── [store-overview.png](er-diagrams/store-overview.png)
 │
-└── 📁 er-diagrams/          # All conceptual/logical ER diagrams
-    ├── final-overview.png
-    ├── person-generalization.png
-    ├── ...
+└── 📁 sql/                         # SQL scripts for database implementation
+    ├── 📁 database/ 
+    │   ├── [create_tables.sql](sql/create_tables.sql)
+    │   ├── [functions.sql](sql/functions.sql)
+    │   ├── [populate_tables.sql](sql/populate_tables.sql)
+    │   ├── [procedures.sql](sql/procedures.sql)
+    │   └── [triggers.sql](sql/triggers.sql)
+    │ 
+    └── 📁 data/                        # Input datasets
+        ├── [past-contract.txt](data/past-contract.txt)
+        └── [store.csv](data/store.csv)
+
+
 
 

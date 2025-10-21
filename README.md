@@ -42,7 +42,7 @@ The system manages all aspects of operations:
 - Customers can only order from stores in their province (`CR6`)  
 - Workers must provide either ID or passport number (`CR5`)  
 
-### 🔹 Key Relationships
+### 🔹 Relationships
 - `Contract` — Employee ↔ Store  
 - `Inventory` — Store ↔ Ingredient  
 - `Composition` — Sandwich ↔ Ingredient  
@@ -56,11 +56,11 @@ The system manages all aspects of operations:
 ```plaintext
 takeaway-db-system/
 │
-├── [DOC.md](DOC.md)                # Full documentation (conceptual, logical, and physical design)
-├── [LICENSE](LICENSE)              # License information
-├── [README.md](README.md)          # Project overview (this file)
+├── [DOC.md](DOC.md)                  # Full project documentation
+├── [LICENSE](LICENSE)                # License information
+├── [README.md](README.md)            # Project overview
 │
-├── 📁 er-diagrams/                 # ER and relational diagrams
+├── 📁 er-diagrams/                   # ER and relational diagrams
 │   ├── [customer-payment-order-before.png](er-diagrams/customer-payment-order-before.png)
 │   ├── [customer-payment-order-after.png](er-diagrams/customer-payment-order-after.png)
 │   ├── [delivery-overview.png](er-diagrams/delivery-overview.png)
@@ -73,18 +73,53 @@ takeaway-db-system/
 │   ├── [rider-order.png](er-diagrams/rider-order.png)
 │   └── [store-overview.png](er-diagrams/store-overview.png)
 │
-└── 📁 sql/                         # SQL scripts for database implementation
-    ├── 📁 database/ 
-    │   ├── [create_tables.sql](sql/create_tables.sql)
-    │   ├── [functions.sql](sql/functions.sql)
-    │   ├── [populate_tables.sql](sql/populate_tables.sql)
-    │   ├── [procedures.sql](sql/procedures.sql)
-    │   └── [triggers.sql](sql/triggers.sql)
-    │ 
-    └── 📁 data/                        # Input datasets
-        ├── [past-contract.txt](data/past-contract.txt)
-        └── [store.csv](data/store.csv)
+└── 📁 sql/                           # SQL scripts and data
+    ├── 📁 database/                  # Database implementation scripts
+    │   ├── [create_tables.sql](sql/database/create_tables.sql)
+    │   ├── [functions.sql](sql/database/functions.sql)
+    │   ├── [populate_tables.sql](sql/database/populate_tables.sql)
+    │   ├── [procedures.sql](sql/database/procedures.sql)
+    │   └── [triggers.sql](sql/database/triggers.sql)
+    │
+    └── 📁 data/                      # Input datasets
+        ├── [past-contract.txt](sql/data/past-contract.txt)
+        └── [store.csv](sql/data/store.csv)
+```
 
+---
 
+## 💻 SQL Implementation
+The physical database follows the **logical schema** and **referential integrity constraints** defined in `DOC.md`.
+The implementation includes:
+- Table creation and triggers (`create_tables.sql`, `triggers.sql`)
+- Populating tables with sample data (`populate_tables.sql`)
+- Operations implemented as **procedures** and **functions** (`procedures.sql`, `functions.sql`)
 
+### ⚙️ Key Procedures & Functions
+- **RemoveExpiredIngredients** — removes expired items from inventory
+- **ListStoresWithLimitedIngredient** — lists stores where ingredient stock is below a threshold
+- **ChainMenu** — lists all sandwiches, ingredients, and prices
+- **PrintOrderReceipt** — generates receipts for specific orders
+- **DailyDeliveryReport** — generates daily delivery summaries
+- **CreateCustomerOrderHistory** — creates historical records of customer orders
+- **FindTopPerformers** — lists top riders, stores, customers, and sandwiches
+- **MonthlySalesTotal (function)** — calculates total sales for a given month
+- **CountSandwichesPerOrder (function)** — counts sandwiches per order
 
+---
+
+## 📎 References
+
+- **DBMS**: MySQL 8.0
+- **ER Modelling Tool**: draw.io
+- **Dataset Generation**: custom CSV + random scripts
+
+---
+
+## 📄 Documentation
+Full documentation of the **conceptual, logical, and physical design** is available in [`DOC.md`](DOC.md).
+It includes:
+- Conceptual ER diagrams
+- Logical relational schema
+- Physical MySQL implementation details
+- Procedures and functions explanations

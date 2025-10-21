@@ -1,6 +1,6 @@
 # 🍽️ Takeaway Database Management System
 > **Project:** `takeaway-db-system`  
-> **Purpose:** Design and implementation of a database system for managing a piadina (Italian flatbread sandwich) takeaway chain.  
+> **Purpose:** Design and implementation of a database system for managing a sandwich takeaway chain.  
 > **Language:** SQL / MySQL
 
 ---

@@ -170,6 +170,8 @@ Alongside the data specifications, the operations to be performed on the data an
 | **8** | Calculate total sales for a specific month and year | 5 times a month |
 | **9** | Calculate the number of sandwiches in an order | 20 times a day |
 
+---
+
 ### 1.4 Conceptual Data Representation
 Following the analysis and gathering of requirements, we proceed to the **conceptual representation of data**, which leads to the creation of the **conceptual schema**.
 We first identify the most relevant concepts in our context: **Customer**, **Employee**, **Riders**, **Store**, **Ingredient**, **Sandwich**, **Order**, and **Payment**. These form the **skeleton of the system**.
@@ -212,7 +214,9 @@ We first identify the most relevant concepts in our context: **Customer**, **Emp
 
 We now analyze all entities and their relationships, indicating their attributes.
 
-#### PERSON Entity
+---
+
+#### Person Entity
 The `Person` entity is the parent of both `Worker` and `Customer`; this generalization is **total and overlapping**.
 `Worker` is further divided into `Employee` and `Rider`; this generalization is **total and exclusive**.
 
@@ -250,7 +254,9 @@ The `Person` entity is the parent of both `Worker` and `Customer`; this generali
 
 </details>
 
-#### Relationship between EMPLOYEE & STORE
+---
+
+#### Relationship between Employee & Store
 Each `Employee` has only one `Contract` with a `Store`, represented as a **one-to-many relationship**.
 To record previous employment, we use a **many-to-many relationship** called `PastContract`.
 The two relationships share most attributes, but the first includes a **Type** attribute (fixed-term or permanent), which determines whether an **EndDate** is required.
@@ -277,7 +283,9 @@ The two relationships share most attributes, but the first includes a **Type** a
 
 </details>
 
-#### Relationship between RIDER & ORDER
+---
+
+#### Relationship between Rider & Order
 Each `Rider` can deliver multiple orders, but each `Order` is delivered by only one Rider, forming a **one-to-many relationship** called `Delivery` between Order and Rider.
 
 <p align="center">
@@ -302,7 +310,9 @@ Each `Rider` can deliver multiple orders, but each `Order` is delivered by only 
 
 </details>
 
-#### CUSTOMER Entity
+---
+
+#### Customer Entity
 Each `Customer` can place multiple `Orders` and perform multiple `Payments`; however, each order is requested and paid for by one and only one Customer.
 
 <p align="center">
@@ -332,7 +342,9 @@ Each `Customer` can place multiple `Orders` and perform multiple `Payments`; how
 
 </details>
 
-#### TRANSACTION Entity
+---
+
+#### Transaction Entity
 Since `Execution` and `Request` alone don't ensure a connection between `Order` and `Payment` - because a customer could make a payment without an order, or an order could exist without payment - we introduce a **ternary relationship** `Transaction` among `Customer`, `Payment`, and `Order`.
 This resolves the ambiguity and ensures a unified and centralized interaction: the request and the payment occur simultaneously.
 
@@ -363,7 +375,9 @@ This resolves the ambiguity and ensures a unified and centralized interaction: t
 
 </details>
 
-#### STORE Entity
+---
+
+#### Store Entity
 Each `Store` is uniquely identified by the **province code** (e.g., FI for Florence), because there is only one store per city.
 The `Inventory` relationship between `Store` and `Ingredient` records the **UnitPrice**, which is _not stored in Ingredient entity_ because it varies by store location.
 
@@ -406,10 +420,12 @@ The `Inventory` relationship between `Store` and `Ingredient` records the **Unit
 
 </details>
 
-#### ORDER Entity
-The Order entity includes the attribute TotalOrderPrice, which equals the sum of the DeliveryPrice and the total price of all piadinas ordered (calculated as the sum of TotalPiadinaPrice for each piadina type in the order).
-Since it is essential to track the details of the ordered piadinas — i.e., their number and price — we make the relationship between Order and Piadina explicit, naming it OrderDetails and recording NumPiadinas and TotalPiadinaPrice.
-Distance can also be derived from the difference between the customer’s and store’s addresses; therefore, it makes sense to associate the Delivery also with Customer.
+---
+
+#### Order Entity
+The `Order` entity includes **TotalOrderPrice**, equal to the sum of **DeliveryPrice** and the total price of all `Sandwiches` in the order (**TotalSandwichPrice** for each type).
+To track individual sandwiches, the relationship between `Order` and `Sandwich` is represented explicitly as `OrderDetails`, recording **NumSandwiches** and **TotalSandwichPrice**.
+**Distance** can be derived from the difference between the Customer’s and Store’s addresses; therefore, `Delivery` is associated with the `Customer` as well.
 
 <p align="center">
   <img src="er-diagrams/order-overview.png" width="65%">
@@ -443,7 +459,7 @@ Distance can also be derived from the difference between the customer’s and st
 
 </details>
 
-At this point, we notice that Delivery has become an association involving four entities and contains several attributes; therefore, it is more convenient to treat it as an entity itself, identified externally by the combination of Customer, Rider, Order, and Store.
+At this point, `Delivery` becomes an association involving **four entities** with several attributes, so it is more convenient to treat it as a **separate entity**, uniquely identified by the combination of `Customer`, `Rider`, `Order`, and `Store`.
 
 <p align="center">
   <img src="er-diagrams/delivery-overview.png" width="60%">
@@ -452,14 +468,14 @@ At this point, we notice that Delivery has become an association involving four 
 <details>
 <summary>🇬🇧 English Legend</summary>
 | Italian Term       | English Translation           |
-|-------------------|--------------------------------|
+|--------------------|-------------------------------|
 | Arrivo             | Arrival                       |
 | Cliente            | Customer                      |
 | Consegna           | Delivery                      |
 | DataConsegna       | Delivery Date                 |
 | Distanza           | Distance                      |
 | Fattorino          | Delivery Person               |
-| Incarico           | Contract                      |
+| Incarico           | Assigment                     |
 | Locale             | Store                         |
 | MetodoConsegna     | Delivery Method               |
 | OraConsegna        | Delivery Time                 |
@@ -469,7 +485,11 @@ At this point, we notice that Delivery has become an association involving four 
 
 </details>
 
-The final schema is obtained by integrating all partial schemas produced so far.
+---
+
+#### Final Schema
+
+The final conceptual schema is obtained by integrating all partial schemas generated above.
 
 <p align="center">
   <img src="er-diagrams/final-overview.png" width="80%">
@@ -506,7 +526,7 @@ The final schema is obtained by integrating all partial schemas produced so far.
 | Fattorino                  | Delivery Person                  |
 | IDOrdine                   | Order ID                         |
 | IDPagamento                | Payment ID                       |
-| Incarico                   | Contract                         |
+| Incarico                   | Assignment                       |
 | Ingrediente                | Ingredient                       |
 | Inventario                 | Inventory                        |
 | Indirizzo                  | Address                          |
@@ -541,6 +561,8 @@ The final schema is obtained by integrating all partial schemas produced so far.
 | Transazione                | Transaction                      |
 
 </details>
+
+---
 
 ### 1.5 Documentation of the Conceptual Data Schema
 
@@ -586,14 +608,16 @@ The final schema is obtained by integrating all partial schemas produced so far.
 |**Transport**|Specifies the rider assigned to the delivery.|Delivery - Rider|-|
 |**Assignment**|Associates an order with a delivery.|Delivery - Order|-|
 
+---
+
 ## 2. LOGICAL DESIGN
 
 ### 2.1 E-R Schema Restructuring
 
 #### 2.1.1 Redundancy Analysis
-The E-R schema contains some redundant attributes:
+The E-R schema contains several redundant attributes:
 
-- **DeliveryPrice** in `Delivery`, which can be derived, within the same entity, from the attributes *DeliveryMethod* and *Distance*.
+- **DeliveryPrice** in `Delivery`, which can be derived, within the same entity, from the attributes _DeliveryMethod_ and _Distance_.
 
   ```text
   DeliveryPrice_Distance = Distance × 0.2
@@ -601,24 +625,26 @@ The E-R schema contains some redundant attributes:
   DeliveryPrice = DeliveryPrice_Distance + DeliveryPrice_Method
   ```
 
-- **TotalSandwichTypePrice** in `OrderDetails`, which can be obtained, through `OrderDetails` and `Sandwich`, by multiplying the price of the specific type of sandwich (*Price*) by the number of sandwiches of that type (*NumSandwiches*).
+- **TotalSandwichTypePrice** in `OrderDetails`, which can be obtained, through `OrderDetails` and `Sandwich`, by multiplying the price of the specific type of sandwich (_Price_) by the number of sandwiches of that type (_NumSandwiches_).
 
   ```text
   TotalSandwichTypePrice = Price × NumSandwiches
   ```
 
-- **TotalOrderPrice** in `Order`, which is derived, through `OrderDetails`, `Sandwich`, and `Delivery`, as the sum of all the sandwiches ordered (or equivalently, the sum of *TotalSandwichTypePrice* for each different type, i.e., for each *SandwichCode* present in the order) plus the *DeliveryPrice*.
+- **TotalOrderPrice** in `Order`, which is derived, through `OrderDetails`, `Sandwich`, and `Delivery`, as the sum of all the sandwiches ordered (or equivalently, the sum of _TotalSandwichTypePrice_ for each different type, i.e., for each _SandwichCode_ present in the order) plus the _DeliveryPrice_.
 
   ```text
   for (type ∈ SandwichCode)
     TotalSandwichesPrice = TotalSandwichesPrice + TotalSandwichTypePrice
   TotalOrderPrice = TotalSandwichesPrice + DeliveryPrice
   ```
-We consider only operations 4, 5, 6, and 8, which are the only operations that handle the *TotalOrderPrice*, which also involves the other redundant attributes. For the purpose of analysis, the following load data assumptions are made.
+Only operations 4, 5, 6, and 8, handle the _TotalOrderPrice_, which also involves the other redundant attributes. For this reason, the following load data assumptions are considered.
 
-## Volume and Operation Tables
+---
 
-### Table of Volumes
+### Volume and Operation Tables
+
+#### Table of Volumes
 
 | **Concept** | **Type** | **Volume** |
 |--------------|-----------|-------------|
@@ -646,7 +672,7 @@ We consider only operations 4, 5, 6, and 8, which are the only operations that h
 
 ---
 
-### Table of Operations
+#### Table of Operations
 
 | **Operation** | **Frequency** |
 |----------------|----------------|
@@ -658,34 +684,62 @@ We consider only operations 4, 5, 6, and 8, which are the only operations that h
 ---
 
 ### Analysis of DeliveryPrice
-Assuming each of the 25 store has performed an average of 800 deliveries, there are 20,000 total deliveries for the chain. Storing `DeliveryPrice` requires 20,000 bytes (20KB) of additional memory. Whether the data is redundant or not, obtaining `DeliveryPrice` requires a single read access to `Order`, `Assignment`, and `Delivery`. However, in the absence of the redundant data, calculating it requires three distinct operations (a product, a conditional expression, and a sum), although the total complexity is constant. Given that the number of accesses per day (20 times per day for Operation 4, totaling 60 read accesses per day) is the same, and the number of deliveries can increase significantly over time, it is convenient to **eliminate this redundant data**.
+Assuming each of the 25 store has performed an average of 800 deliveries, there are 20,000 total deliveries for the chain. 
+Storing _DeliveryPrice_ requires 20,000 bytes (20KB) of additional memory. 
+
+Whether or not the data is redundant, obtaining _DeliveryPrice_ requires a single read access to `Order`, `Assignment`, and `Delivery`. However, in the absence of the redundant data, the calculation requires three distinct operations (a product, a conditional expression, and a sum), although the total computational complexity remains constant. 
+
+Given that Operation 4 is performed 20 times per day, resulting in 60 read accesses per day, and considering that the number of deliveries may increase significantly over time, it is more efficient to **eliminate this redundant data**.
 
 ### Analysis of TotalSandwichTypePrice
-This attribute can be derived, for each different type of sandwich (i.e., for each `SandwichCode`), by multiplying the sandwich's `Price` by the `NumberOfSandwiches`. However, this datum is not essential for calculating `TotalOrderPrice`, which can be computed directly by summing the price of each sandwich associated with the same `OrderID`. Since the same procedure would be executed for each type of sandwich to determine `TotalSandwichTypePrice`, we can directly **eliminate TotalSandwichTypePrice**.
+This attribute can be derived, for each different type of sandwich (i.e., for each _SandwichCode_), by multiplying _Price_ by _NumSandwiches_. 
+However, this attribute is not essential for calculating _TotalOrderPrice_, which can instead be computed directly by summing the prices of all sandwiches associated with the same _OrderID_. 
+
+Since the same procedure would otherwise be executed for each type of sandwich to determine _TotalSandwichTypePrice_, it is preferable to**eliminate TotalSandwichTypePrice** and consequently also _NumSandwiches_.
+
+---
 
 ### Analysis of TotalOrderPrice
 
 #### Case with redundancy
-Since the total number of deliveries is 20,000, 20KB of additional memory is required to store the attribute. To determine `TotalOrderPrice` in this case, only one access to `Order` is required, resulting in 20 accesses per day.
+Since the total number of deliveries is 20,000, 20KB of additional memory is required to store the attribute. 
+In this case, determining _TotalOrderPrice_ requires only one access to `Order`, resulting in 20 accesses per day.
 
 #### Case without redundancy
-Calculating TotalOrderPrice requires accessing several constructs: first Order, then Delivery (via Assignment) to calculate DeliveryPrice, and subsequently Sandwich (via OrderDetails) to find the prices of all ordered piadinas. Given that the volumes of OrderDetails (40,000) and Delivery (20,000) suggest that, on average, each delivery includes about 2 sandwiches, the number of accesses to OrderDetails and Sandwich is approximately 2. The total daily accesses needed for Operation 4 would be 20 * (1 [Order] + 1 [Assignment] + 1 [Delivery] + 2 [OrderDetails] + 2 [Sandwich]) = 140 accesses.
+In the absence of redundancy, calculating _TotalOrderPrice_ requires accessing several constructs: first `Order`, then `Delivery` (via `Assignment`) to compute _DeliveryPrice_, and finally `Sandwich` (via `OrderDetails`) to determine the prices of all sandwiches associated with the same order.
+
+Given that the volumes of `OrderDetails` and `Delivery` are 40,000 and 20,000 respectively, each delivery includes approximately two sandwiches on average. Therefore, the total daily accesses for Operation 4 amount to:
+
+```text
+20 × (1 [Order] + 1 [Assignment] + 1 [Delivery] + 2 [OrderDetails] + 2 [Sandwich]) = 140 read accesses
+```
 
 #### Choice
-The choice between mantaining or removing `TotalOrderPrice` is not trivial and is *deferred to the physical design phase*; however, for the logical design, the attribute is **mantained**.
+The decision to mantaian or eliminate _TotalOrderPrice_ is not straightforward and is *deferred to the physical design phase*.
+However, for the purposes of logical design, the attribute is **mantained**.
 
-#### 2.1.2 Removing Generalizations
+---
+
+#### 2.1.2 Removal of Generalizations
 There are two generalizations in the E-R schema:
-- `Person` into `Worker` and `Customer`
-- `Worker` into `Employee` and `Rider`
-Both are total, and the parent entities are not directly connected to other entities. Therefore, it is possible to merge them into theri child entities, adding the parent attributes to the children. In this way, we get three separate entities - `Customer`, `Employee` and `Rider` - which participate in different associations.
+- `Person` → `Worker` and `Customer`
+- `Worker` → `Employee` and `Rider`
+  
+Both generalizations are total, and the parent entities are not directly connected to other entities. Therefore, they can be merged into their respective child entities, adding the parent attributes to the children. 
+This results in three separate entities - `Customer`, `Employee` and `Rider` - which participate in different associations.
 
-#### 2.1.3 Removing Multivalued Attributes
-Instead of storing `Customer`'s and `Store`'s multivalued attribute `Address`, I decide to inlcude the associated attributes directly in their respective entities.
+---
+
+#### 2.1.3 Removal of Multivalued Attributes
+Instead of storing the multivalued attribute _Address_ for `Customer` and `Store`, the associated attributes are included directly in the respective entities.
+
+---
 
 #### 2.1.4 Selection of Primary Identifiers
-After removing generalizations and creating three separate entities, I assign internal identifiers of the *EntityCode* to these entities, while mantaining *TaxCode* as an attribute.
-Additionally, instead of using the external identifier for `Delivery` - which includes `Order`, `Customer`, `Rider`, and `Store` - I introduce an internal identifier called `DeliveryID`.
+After removing generalizations and creating three separate entities, each is assigned an internal identifier of the form _EntityCode_, while _TaxCode_ is kept as an attribute.
+Additionally, instead of using the external identifier for `Delivery` (which includes `Order`, `Customer`, `Rider`, and `Store`), a new internal identifier called _DeliveryID_ is introduced.
+
+---
 
 #### 2.1.5 Restructered Schema
 
@@ -762,6 +816,8 @@ Additionally, instead of using the external identifier for `Delivery` - which in
 
 </details>
 
+---
+
 ### 2.2 Translation to the Relational Model
 
 #### 2.2.1 Logical Schema
@@ -779,7 +835,9 @@ Additionally, instead of using the external identifier for `Delivery` - which in
 - **Rider** (RiderCode, Name, Surname, TaxCode, PhoneNumber, IDCardNumber*, PassportNumber*, VATNumber)
 - **Delivery** (DeliveryID, DeliveryMethod, Distance, DeliveryDate, DeliveryTime, OrderID, CustomerCode, RiderCode, StoreCode)
 
-Note: * refers to Optional attrbutes
+(*) denotes optional attrbutes.
+
+---
 
 #### 2.2.2 Referential Integrity Costraints
 
@@ -799,83 +857,107 @@ Note: * refers to Optional attrbutes
 - Delivery.RiderCode         → Rider.RiderCode
 - Delivery.StoreCode         → Store.ProvinceCode
 
-## 3 MYSQL IMPLEMENTATION
-For the MySQL implementations, I've followed the logical schema and the referential integrity costraints, which have allowed me to define all the tables of my physical schema (`CreateTables.sql` and `Triggers`.sql).
+---
 
-> Within `Triggers.sql`, a trigger has been included to calculate *TotalOrderPrice*. According to the logical schema, this attribute belongs to the `Order` table; however, in the physical design, its value is initialized to 0 and calculated only after a `Delivery` instance referencing that order is created.
+## 3. MYSQL IMPLEMENTATION
 
-Tables have been populated with realistic random values (`PopulateTables.sql`) using both `INSERT INTO` and `LOAD DATA (from `PopulateStore.csv` and `PopulatePastContract`.txt).
+For the MySQL implementation, the logical schema and the referential integrity constraints were followed, allowing the definition of all tables in the physical schema (`CreateTables.sql` and `Triggers.sql`).
 
-Finally, the nine operations defined during the requirements gathering phase have been implemented as procedures (first seven) and functions (last two).
+> Within `Triggers.sql`, a trigger was also included to calculate *TotalOrderPrice*. According to the logical schema, this attribute belongs to the `Order` table; however, in the physical design, its value is initialized to 0 and is computed only after a `Delivery` instance referencing that specific order is created.
+
+The tables were populated with realistic random values (`PopulateTables.sql`), using both the `INSERT INTO` command and the `LOAD DATA` statement (from the files `PopulateStore.csv` and `PopulatePastContract.txt`).
+
+Finally, the nine operations defined during the *Requirements Gathering* phase were implemented as **procedures** (the first seven) and **functions** (the last two).
+
+---
 
 ### 3.1 Procedures
 
-### 3.1.1 RemoveExpiredIngredients
-- Deletes expired ingredients from the Inventory table (rows where ExpirationDate < CURDATE())
-- No input parameters, returns nothing
-- No error handling required
+#### 3.1.1 RemoveExpiredIngredients
+- Deletes expired ingredients from the `Inventory` table (rows where `ExpirationDate < CURDATE()`).
+- No input parameters and no return value.
+- No error handling required.
 
-### 3.1.2 ListStoresWithLimitedIngredient
-- Returns a list of stores where a specific ingredient is below a threshold
-- Input parameters:
-  - WeightLimit: maximum allowed weight
-  - IngredientName: ingredient to check
-- Returns the store list (ProvinceCode) and the corresponding AvailableWeight
-- Error handling:
-  - WeightLimit < 0
-  - IngredientName not found in Ingredient table
+---
 
-### 3.1.3 ChainMenu
-- Generates a list of sandwiches available in the chain, with ingredients and price
-- No input parameters, returns a joined list from Composition, Sandwich, and Ingredient
-- No error handling required
+#### 3.1.2 ListStoresWithLimitedIngredient
+- Returns a list of stores where a specific ingredient quantity is below a defined threshold.  
+- **Input parameters:**
+  - `WeightLimit`: maximum threshold value below which the ingredient is considered insufficient.
+  - `IngredientName`: name of the ingredient to check.  
+- **Output:** list of stores (identified by `ProvinceCode`) and corresponding quantities (`AvailableWeight`) from the `Inventory` table where `AvailableWeight < WeightLimit`.  
+- **Error handling:**
+  - `WeightLimit < 0` (a negative value is passed).
+  - `IngredientName` not found in the `Ingredient` table.
 
-### 3.1.4 PrintOrderReceipt
-- Generates a receipt for a specific order, including customer name, total price, and payment details
-- Input: OrderID
-- Returns one row from a join of Order, Payment, and Customer
-- Error handling:
-  - OrderID does not match ^O_[0-9]+$
-  - OrderID not found
-  - OrderID exists but the order has not been delivered yet (so TotalOrderPrice = 0)
+---
 
-### 3.1.5 DailyDeliveryReport
-- Generates a daily delivery report with total deliveries and total earnings
-- Input: Date
-- Returns one row with COUNT(DeliveryID) AS TotalDeliveries and SUM(TotalOrderPrice) AS TotalEarnings
-- Error checks:
-  - Date > CURDATE()
-  - Date with no deliveries
+#### 3.1.3 ChainMenu
+- Generates a list of all sandwiches sold by the chain, including their names, ingredients, and prices.  
+- No input parameters.  
+- Returns a list obtained by joining `Composition`, `Sandwich`, and `Ingredient`.  
+- No error handling required.
 
-### 3.1.6 CreateCustomerOrderHistory
-- Dynamically creates/updates a view CustomerOrderHistory with all orders of a specific customer, sorted from latest to earliest delivery
-- Input: CustomerCode
-- Creates a view via a dynamic query (@sql)
-- Error handling:
-  - CustomerCode does not match ^CL_[0-9]+$
-  - CustomerCode not found
+---
 
-### 3.1.7 FindBest
-- Returns statistics of top performers in several categories (riders, stores, customers, most ordered sandwiches)
-- No input parameters
-- Returns four lists with top three entries per category
-- No error handling required
+#### 3.1.4 PrintOrderReceipt
+- Generates a receipt for a specific order, including the order code, the customer’s name and surname, the total price, and payment details (method, date, and time).  
+- **Input:** `OrderID`.  
+- **Output:** one row obtained by joining `Order`, `Payment`, and `Customer`.  
+- **Error handling:**
+  - `OrderID` does not match the pattern `^O_[0-9]+$`.
+  - `OrderID` matches the pattern but does not exist in the database.
+  - `OrderID` exists but the corresponding order has not yet been delivered (thus `TotalOrderPrice` is still 0).
 
-## 3.2 Functions
+---
 
-### 3.2.1 MonthlySalesTotal
-- Calculates total sales for a given month and year
-- Input: Month, Year
-- Output: formatted string indicating total sales
-- Error: Month < 1 OR Month > 12
+#### 3.1.5 DailyDeliveryReport
+- Generates a daily report of deliveries, showing the total number of deliveries and total earnings for a specific date.  
+- **Input:** `Date`.  
+- **Output:** one row containing `COUNT(DeliveryID) AS TotalDeliveries` and `SUM(TotalOrderPrice) AS TotalEarnings` from a join between `Delivery` and `Order`.  
+- **Error handling:**
+  - `Date > CURDATE()` (future date).
+  - No deliveries were made on the specified date.
 
-### 3.2.2 CountSandwichesPerOrder
-- Returns the number of sandwiches in a specified order
-- Input: OrderID
-- Output: formatted string indicating total sandwiches
-- Error handling:
-  - OrderID does not match ^O_[0-9]+$
-  - OrderID not found
+---
+
+#### 3.1.6 CreateCustomerOrderHistory
+- Dynamically creates or updates a view called `CustomerOrderHistory`, containing all orders of a specific customer, sorted from the most recent to the oldest delivery.  
+- **Input:** `CustomerCode`.  
+- The view is created dynamically through a query stored in `@sql`, which is then executed.  
+- **Error handling:**
+  - `CustomerCode` does not match the pattern `^CL_[0-9]+$`.
+  - `CustomerCode` matches the pattern but does not exist in the database.
+
+---
+
+#### 3.1.7 FindTopPerformers
+- Returns statistics on the best-performing entities within the chain — namely, riders, stores, and customers with the highest number of deliveries, and the most frequently ordered sandwiches.  
+- No input parameters.  
+- Returns four lists, each containing the top three entries per category, sorted in descending order by deliveries (for `Rider`, `Store`, `Customer`) and by total sales (for `Sandwich`).  
+- No error handling required.
+
+---
+
+### 3.2 Functions
+
+#### 3.2.1 MonthlySalesTotal
+- Calculates the total sales for the chain for a specified month and year.  
+- **Input:** `Month`, `Year`.  
+- **Output:** a formatted string indicating the total sales for the given month and year.  
+- **Error handling:**  
+  - `Month < 1 OR Month > 12`.
+
+---
+
+#### 3.2.2 CountSandwichesPerOrder
+- Returns the total number of sandwiches in a specified order.  
+- **Input:** `OrderID`.  
+- **Output:** a formatted string indicating the total number of sandwiches in the order.  
+- **Error handling:**
+  - `OrderID` does not match the pattern `^O_[0-9]+$`.
+  - `OrderID` matches the pattern but does not exist in the database.
+
 
 
 

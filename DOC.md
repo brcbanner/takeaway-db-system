@@ -959,5 +959,3 @@ Finally, the nine operations defined during the *Requirements Gathering* phase w
 
 
 
-
-

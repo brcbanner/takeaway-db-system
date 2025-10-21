@@ -6,35 +6,35 @@
 ---
 
 ## 📚 Table of Contents
-1. 📐 [Conceptual Design](#-conceptual-design)
-  - 1.1 [Sample Owner Request](#-sample-owner-request)
-  - 1.2 [Requirements Analysis](#-requirements-analysis)
-  - 1.3 [Requirements Gathering](#-requirements-gathering)
-    - 1.3.1 [Data Requirements](#-data-requirements)
-    - 1.3.2 [Operation Requirements](#-operation-requirements)
-  - 1.4 [Conceptual Data Representation](#-conceptual-data-representation)
-  - 1.5 [Documentation of the Conceptual Data Schema](#-documentation-of-the-conceptual-data-schema)
-2. 🧩 [Logical Design](#-logical-design)
-  - 2.1 [E-R Schema Restructuring](#-e-r-schema-restructuring)
-    - 2.1.1 [Redundancy Analysis](#-redundancy-analysis)
-    - 2.1.2 [Removal of Generalizations](#-removal-of-generalizations)
-    - 2.1.3 [Removal of Multivalued Attributes](#-removal-of-multivalued-attributes)
-    - 2.1.4 [Selection of Primary Identifiers](#-selection-of-primary-identifiers)
-    - 2.1.5 [Restructured Schema](#-restructured-schema)
-  - 2.2 [Translation to the Relational Model](#translation-to-the-relational-model)
-    - 2.2.1 [Logical Schema](#logical-schema)
-3. 💻 [MySQL Implementation](#mysql-implementation)
-  - 3.1 [Procedures](#procedures)
-    - 3.1.1 [RemoveExpiredIngredients](#removeexpiredingredients)
-    - 3.1.2 [ListShopsWithLimitedIngredient](#listshopswithlimitedingredient)
-    - 3.1.3 [ChainMenu](#chainmenu)
-    - 3.1.4 [PrintOrderReceipt](#printorderreceipt)
-    - 3.1.5 [DailyDeliveryReport](#dailydeliveryreport)
-    - 3.1.6 [CreateCustomerOrderHistory](#createcustomerorderhistory)
-    - 3.1.7 [FindBest](#findbest)
-  - [Functions](#functions)
-    - 3.1.8 [MonthlySalesTotal](#monthlysalestotal)
-    - 3.1.9 [CountPiadinePerOrder](#countpiadineperorder)
+1. 📐 [Conceptual Design](#1-conceptual-design)
+  - 1.1 [Sample Owner Request](#11-sample-owner-request)
+  - 1.2 [Requirements Analysis](#12-requirements-analysis)
+  - 1.3 [Requirements Gathering](#13-requirements-gathering)
+    - 1.3.1 [Data Requirements](#131-data-requirements)
+    - 1.3.2 [Operations Requirements](#132-operation-requirements)
+  - 1.4 [Conceptual Data Representation](#14-conceptual-data-representation)
+  - 1.5 [Documentation of the Conceptual Data Schema](#15-documentation-of-the-conceptual-data-schema)
+2. 🧩 [Logical Design](#2-logical-design)
+  - 2.1 [E-R Schema Restructuring](#21-e-r-schema-restructuring)
+    - 2.1.1 [Redundancy Analysis](#211-redundancy-analysis)
+    - 2.1.2 [Removal of Generalizations](#212-removal-of-generalizations)
+    - 2.1.3 [Removal of Multivalued Attributes](#213-removal-of-multivalued-attributes)
+    - 2.1.4 [Selection of Primary Identifiers](#214-selection-of-primary-identifiers)
+    - 2.1.5 [Restructured Schema](#215-restructured-schema)
+  - 2.2 [Translation to the Relational Model](#22-translation-to-the-relational-model)
+    - 2.2.1 [Logical Schema](#221-logical-schema)
+3. 💻 [MySQL Implementation](#3-mysql-implementation)
+  - 3.1 [Procedures](#31-procedures)
+    - 3.1.1 [RemoveExpiredIngredients](#311-removeexpiredingredients)
+    - 3.1.2 [ListShopsWithLimitedIngredient](#312-listshopswithlimitedingredient)
+    - 3.1.3 [ChainMenu](#313-chainmenu)
+    - 3.1.4 [PrintOrderReceipt](#314-printorderreceipt)
+    - 3.1.5 [DailyDeliveryReport](#315-dailydeliveryreport)
+    - 3.1.6 [CreateCustomerOrderHistory](#316-createcustomerorderhistory)
+    - 3.1.7 [FindTopPerformers](#317-findtopperformers)
+  - 3.2 [Functions](#32-functions)
+    - 3.2.1 [MonthlySalesTotal](#321-monthlysalestotal)
+    - 3.2.2 [CountPiadinePerOrder](#322-countpiadineperorder)
 
 ---
 
@@ -110,7 +110,7 @@ To clarify and understand the terms used, a glossary of terms is presented below
 
 ### 1.3 Requirements Gathering
 
-#### 1.3.1 On Data
+#### 1.3.1 Data Requirements
 Following the request and the glossary, we proceed with requirements gathering — that is, identifying the characteristics that our database must possess.  
 After reformulating certain terms and removing ambiguities, the text is broken down into groups of related sentences.
 
@@ -155,7 +155,7 @@ Each `Transaction` is recorded with a **payment code** and **payment method**, a
 
 ---
 
-#### 1.3.1 On Operations
+#### 1.3.2 Operations Requirements
 Alongside the data specifications, the operations to be performed on the data and their average frequencies are collected.
 
 | **Operation** | **Description** | **Average Frequency** |

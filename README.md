@@ -1,9 +1,10 @@
 # 🍽️ Takeaway Database Management System
 
-> **Project:** `takeaway-db-system`  
-> **Language:** SQL (MySQL)  
-> **Author:** Matteo Pinzani
-> **Purpose:** Design and implementation of a relational database system for managing a chain of sandwich takeaway stores.
+**Project:** `takeaway-db-system`  
+**Language:** SQL (MySQL)  
+**Author:** Matteo Pinzani  
+**Purpose:** Design and implementation of a relational database system for managing a chain of sandwich takeaway stores.
+
 
 ---
 

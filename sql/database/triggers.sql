@@ -160,9 +160,9 @@ BEGIN
 
     SELECT SUM(Piadina.Price)
     INTO piadinasPrice
-    FROM OrderDetail
-    JOIN Piadina ON OrderDetail.PiadinaID = Piadina.PiadinaID
-    WHERE OrderDetail.OrderID = NEW.OrderID;
+    FROM OrderDetails
+    JOIN Piadina ON OrderDetails.PiadinaID = Piadina.PiadinaID
+    WHERE OrderDetails.OrderID = NEW.OrderID;
 
     SET deliveryPrice = 
         CASE NEW.DeliveryMethod

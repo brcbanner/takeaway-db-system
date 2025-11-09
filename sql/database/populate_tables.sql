@@ -18,7 +18,7 @@ DELETE FROM Rider;
 SET GLOBAL local_infile = 1;
 
 --
-LOAD DATA LOCAL INFILE '*file_path*/data/store.csv'
+LOAD DATA LOCAL INFILE '*file_path*/store.csv'
 INTO TABLE Store
 FIELDS TERMINATED BY ';'
 IGNORE 1 ROWS;
@@ -45,7 +45,7 @@ INSERT INTO Employee VALUES
 -- DELETE FROM Employee;
 
 --
-LOAD DATA LOCAL INFILE '*file_path*/data/past_contract.txt'
+LOAD DATA LOCAL INFILE '*file_path*/past_contract.txt'
 INTO TABLE PastContract
 FIELDS TERMINATED BY ',';
 

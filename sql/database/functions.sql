@@ -13,8 +13,8 @@ BEGIN
     END IF;
 
     SELECT COALESCE(SUM(O.TotalOrderPrice), 0) INTO total
-    FROM Orders O, Delivery D
-    WHERE O.OrderID = D.Order
+    FROM `Order` O, Delivery D
+    WHERE O.OrderID = D.`Order`
       AND MONTH(D.DeliveryDate) = Month AND YEAR(D.DeliveryDate) = Year;
 
     RETURN CONCAT('Total sales for ', Month, '/', Year, ': ', total, ' EUR');
@@ -52,7 +52,7 @@ BEGIN
 
     SELECT COUNT(*) INTO total
     FROM OrderDetails
-    WHERE Order = OrderCode;
+    WHERE `Order` = OrderCode;
 
     RETURN CONCAT('Number of sandwiches for order ', OrderCode, ': ', total);
 END $$

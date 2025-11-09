@@ -3,7 +3,7 @@
 -- Table initialization (necessary after any inserts executed to verify triggers)
 DELETE FROM PastContract;
 DELETE FROM Employee;
-DELETE FROM OrderDetail;
+DELETE FROM OrderDetails;
 DELETE FROM Inventory;
 DELETE FROM Composition;
 DELETE FROM Delivery;
@@ -12,19 +12,19 @@ DELETE FROM Ingredient;
 DELETE FROM Sandwich;
 DELETE FROM Payment;
 DELETE FROM Customer;
-DELETE FROM Order;
+DELETE FROM `Order`;
 DELETE FROM Rider;
 
 SET GLOBAL local_infile = 1;
 
 --
 LOAD DATA LOCAL INFILE '*file_path*/data/store.csv'
-INTO TABLE Locale
+INTO TABLE Store
 FIELDS TERMINATED BY ';'
 IGNORE 1 ROWS;
 
--- SELECT * FROM Locale;
--- DELETE FROM Locale;
+-- SELECT * FROM Store;
+-- DELETE FROM Store;
 
 --
 INSERT INTO Employee VALUES
@@ -206,7 +206,7 @@ INSERT INTO Composition VALUES
 -- DELETE FROM Composition;
 
 --
-INSERT INTO Order (OrderID) VALUES
+INSERT INTO `Order` (OrderID) VALUES
 ('O_1'),
 ('O_2'),
 ('O_3'),
@@ -248,8 +248,8 @@ INSERT INTO Order (OrderID) VALUES
 ('O_39'),
 ('O_40');
 
--- SELECT * FROM Order;
--- DELETE FROM Order;
+-- SELECT * FROM `Order`;
+-- DELETE FROM `Order`;
 
 --
 INSERT INTO OrderDetails VALUES

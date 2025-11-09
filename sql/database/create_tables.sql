@@ -123,9 +123,9 @@ CREATE TABLE Composition (
 ) ENGINE = INNODB;
 
 --
-DROP TABLE IF EXISTS Order;
+DROP TABLE IF EXISTS `Order`;
 
-CREATE TABLE Order (
+CREATE TABLE `Order` (
     OrderID VARCHAR(15) PRIMARY KEY 
         CHECK (OrderID REGEXP '^O_[0-9]+$'),
     TotalOrderPrice DECIMAL(5, 2) DEFAULT 0
@@ -139,7 +139,7 @@ CREATE TABLE OrderDetails (
     SandwichCode VARCHAR(5),
     PRIMARY KEY (OrderID, SandwichCode),
     FOREIGN KEY (OrderID) 
-        REFERENCES Order(OrderID)
+        REFERENCES `Order`(OrderID)
         ON UPDATE CASCADE,
     FOREIGN KEY (SandwichCode) 
         REFERENCES Sandwich(SandwichCode)

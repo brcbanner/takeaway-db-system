@@ -29,7 +29,8 @@ BEGIN
 
     SELECT IngredientCode INTO CorrespondingIngredientCode
     FROM Ingredient
-    WHERE Name = IngredientName;
+    WHERE Name = IngredientName
+    LIMIT 1;
 
     IF CorrespondingIngredientCode IS NULL THEN
         SIGNAL SQLSTATE '45000'
@@ -64,9 +65,9 @@ BEGIN
     SELECT S.Name AS SandwichName, 
            GROUP_CONCAT(I.Name SEPARATOR ', ') AS RequiredIngredients, 
            S.Price
-    FROM Sandwich S, Composition C, Ingredient I
-    WHERE S.SandwichCode = C.Sandwich
-    AND C.Ingredient = I.IngredientCode
+    FROM Sandwich S
+    JOIN Composition C ON S.SandwichCode = C.Sandwich
+    JOIN Ingredient I ON C.Ingredient = I.IngredientCode
     GROUP BY S.SandwichCode;
 END $$
 DELIMITER ;
@@ -92,7 +93,7 @@ BEGIN
 
     SELECT EXISTS(
         SELECT 1
-        FROM Orders
+        FROM `Order`
         WHERE OrderID = OrderCode
     ) INTO OrderExists;
 
@@ -101,7 +102,7 @@ BEGIN
         SET MESSAGE_TEXT = 'Error: No order exists with this code';
     ELSE
         SELECT TotalOrderPrice INTO OrderPrice
-        FROM Orders
+        FROM `Order`
         WHERE OrderID = OrderCode;
 
         IF OrderPrice = 0 THEN
@@ -115,7 +116,7 @@ BEGIN
                    PaymentMethod, 
                    TransactionDate, 
                    TransactionTime
-            FROM Orders O, Payment P, Customer C
+            FROM `Order` O, Payment P, Customer C
             WHERE OrderID = OrderCode
               AND O.OrderID = P.Order
               AND P.Customer = C.CustomerCode;
@@ -155,9 +156,9 @@ BEGIN
     
     SELECT COUNT(D.DeliveryCode) AS NumberOfDeliveries, 
            SUM(O.TotalOrderPrice) AS TotalRevenue
-    FROM Delivery D, Orders O
+    FROM Delivery D, `Order` O
     WHERE D.DeliveryDate = ReportDate
-      AND D.Order = O.OrderID;
+      AND D.`Order` = O.OrderID;
 END $$
 DELIMITER ;
 

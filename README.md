@@ -57,34 +57,34 @@ The system manages all aspects of operations:
 ```plaintext
 takeaway-db-system/
 │
-├── [DOC.md](DOC.md)                  # Full project documentation
-├── [LICENSE](LICENSE)                # License information
-├── [README.md](README.md)            # Project overview
+├── DOC.md                  # Full project documentation
+├── LICENSE                 # License information
+├── README.md               # Project overview
 │
 ├── 📁 er-diagrams/                   # ER and relational diagrams
-│   ├── [customer-payment-order-before.png](er-diagrams/customer-payment-order-before.png)
-│   ├── [customer-payment-order-after.png](er-diagrams/customer-payment-order-after.png)
-│   ├── [delivery-overview.png](er-diagrams/delivery-overview.png)
-│   ├── [employee-store.png](er-diagrams/employee-store.png)
-│   ├── [final-overview.png](er-diagrams/final-overview.png)
-│   ├── [final.png](er-diagrams/final.png)
-│   ├── [initial-overview.png](er-diagrams/initial-overview.png)
-│   ├── [order-overview.png](er-diagrams/order-overview.png)
-│   ├── [person-generalization.png](er-diagrams/person-generalization.png)
-│   ├── [rider-order.png](er-diagrams/rider-order.png)
-│   └── [store-overview.png](er-diagrams/store-overview.png)
+│   ├── customer-payment-order-before.png
+│   ├── customer-payment-order-after.png
+│   ├── delivery-overview.png
+│   ├── employee-store.png
+│   ├── final-overview.png
+│   ├── final.png
+│   ├── initial-overview.png
+│   ├── order-overview.png
+│   ├── person-generalization.png
+│   ├── rider-order.png
+│   └── store-overview.png
 │
 └── 📁 sql/                           # SQL scripts and data
     ├── 📁 database/                  # Database implementation scripts
-    │   ├── [create_tables.sql](sql/database/create_tables.sql)
-    │   ├── [functions.sql](sql/database/functions.sql)
-    │   ├── [populate_tables.sql](sql/database/populate_tables.sql)
-    │   ├── [procedures.sql](sql/database/procedures.sql)
-    │   └── [triggers.sql](sql/database/triggers.sql)
+    │   ├── create_tables.sql
+    │   ├── functions.sql
+    │   ├── populate_tables.sql
+    │   ├── procedures.sql
+    │   └── triggers.sql
     │
     └── 📁 data/                      # Input datasets
-        ├── [past-contract.txt](sql/data/past-contract.txt)
-        └── [store.csv](sql/data/store.csv)
+        ├── past-contract.txt
+        └── store.csv
 ```
 
 ---
